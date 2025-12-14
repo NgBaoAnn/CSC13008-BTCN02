@@ -1,5 +1,6 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
+import App from '@/App';
 import Home from '@/pages/Home';
 import Search from '@/pages/Search';
 import MovieDetail from '@/pages/MovieDetail';
@@ -8,20 +9,24 @@ import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import Profile from '@/pages/Profile';
 import Favorites from '@/pages/Favorites';
+import NotFound from '@/pages/NotFound';
 
-const AppRoutes = () => {
-  return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/search" element={<Search />} />
-      <Route path="/movie/:id" element={<MovieDetail />} />
-      <Route path="/person/:id" element={<Person />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/favorites" element={<Favorites />} />
-    </Routes>
-  );
-};
+export const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: 'search', element: <Search /> },
+      { path: 'movie/:id', element: <MovieDetail /> },
+      { path: 'person/:id', element: <Person /> },
+      { path: 'login', element: <Login /> },
+      { path: 'register', element: <Register /> },
+      { path: 'profile', element: <Profile /> },
+      { path: 'favorites', element: <Favorites /> },
+      { path: '*', element: <NotFound /> },
+    ],
+  },
+]);
 
-export default AppRoutes;
+export default router;

@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '@/components/layout/Header';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import AppRoutes from '@/routes/AppRoutes';
+import { Outlet } from 'react-router-dom';
 import '@/App.css';
 import { ThemeProvider } from '@/context/ThemeContext';
 
@@ -13,7 +13,7 @@ function App() {
         <Header />
         <Navbar />
         <main className="flex-grow">
-          <AppRoutes />
+          <Outlet />
         </main>
         <Footer />
       </div>
