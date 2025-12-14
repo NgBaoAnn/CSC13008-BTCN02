@@ -12,7 +12,7 @@ const MovieCard = ({
       <div className="group relative w-full max-w-[420px] mx-auto cursor-pointer">
         <div className="overflow-hidden rounded-lg">
           <div className="relative">
-            <div className="aspect-[2/3] rounded-lg transform transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg group-hover:shadow-black/40 dark:border dark:border-slate-800">
+            <div className="aspect-[2/3] rounded-lg transform transition-all duration-300 scale-80 group-hover:scale-100 group-hover:shadow-lg group-hover:shadow-black/40 dark:border dark:border-slate-800">
               {image ? (
                 <img
                   src={image}
