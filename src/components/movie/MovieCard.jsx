@@ -17,7 +17,7 @@ const MovieCard = ({
                 <img
                   src={image}
                   alt={title}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover rounded-md"
                   loading="lazy"
                 />
               ) : (

@@ -49,7 +49,7 @@ function TopMovieSlider() {
   return (
     <section className="relative">
       <div className="flex items-center justify-center gap-10">
-        <button onClick={prev}>
+        <button className="cursor-pointer hover:opacity-75 hover:scale-105" onClick={prev}>
           <ChevronLeft size={32} />
         </button>
 
@@ -63,8 +63,8 @@ function TopMovieSlider() {
           />
         </Link>
 
-        <button onClick={next}>
-          <ChevronRight size={32} />
+        <button className="cursor-pointer hover:opacity-75 hover:scale-105" onClick={next}>
+          <ChevronRight  size={32} />
         </button>
       </div>
     </section>
