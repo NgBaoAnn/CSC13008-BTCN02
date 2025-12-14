@@ -4,17 +4,20 @@ import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Home from './pages/Home';
 import './App.css';
+import { ThemeProvider } from './context/ThemeContext';
 
 function App() {
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
-      <Navbar />
-      <main className="flex-grow">
-        <Home />
-      </main>
-      <Footer />
-    </div>
+    <ThemeProvider>
+      <div className="flex flex-col min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+        <Header />
+        <Navbar />
+        <main className="flex-grow">
+          <Home />
+        </main>
+        <Footer />
+      </div>
+    </ThemeProvider>
   );
 }
 

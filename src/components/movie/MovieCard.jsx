@@ -7,11 +7,11 @@ const MovieCard = ({ title = "Movie Title", featured = false }) => {
         {/* Poster */}
         <div className="overflow-hidden rounded-lg">
           <div className="relative">
-            <div className="aspect-[2/3] bg-gray-300 rounded-lg transform transition-transform duration-300 group-hover:scale-105 group-hover:shadow-xl">
+            <div className="aspect-[2/3] bg-gray-300 rounded-lg transform transition-transform duration-300 group-hover:scale-105 group-hover:shadow-xl dark:bg-gray-700">
               <div className="h-full w-full flex items-center justify-center">
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
-                  className="h-24 w-24 text-gray-500" 
+                  className="h-24 w-24 text-gray-500 dark:text-gray-300" 
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor"
@@ -42,9 +42,9 @@ const MovieCard = ({ title = "Movie Title", featured = false }) => {
   return (
     <div className="flex flex-col gap-2 cursor-pointer group">
       {/* Movie Poster Placeholder */}
-      <div className="relative bg-gray-300 rounded-lg overflow-hidden transition-transform duration-300 group-hover:scale-105 group-hover:shadow-xl">
+      <div className="relative bg-gray-300 rounded-lg overflow-hidden transition-transform duration-300 group-hover:scale-105 group-hover:shadow-xl dark:bg-gray-700">
         <div className="aspect-[2/3] flex items-center justify-center">
-          <div className="text-center text-gray-500">
+          <div className="text-center text-gray-500 dark:text-gray-300">
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
               className="h-16 w-16 mx-auto mb-2" 
@@ -66,7 +66,7 @@ const MovieCard = ({ title = "Movie Title", featured = false }) => {
 
       {/* Movie Title */}
       <div className="px-1">
-        <h3 className="font-medium text-gray-800 text-center line-clamp-2 group-hover:text-blue-600 transition-colors">
+        <h3 className="font-medium text-gray-800 text-center line-clamp-2 group-hover:text-blue-600 transition-colors dark:text-gray-100">
           {title}
         </h3>
       </div>
