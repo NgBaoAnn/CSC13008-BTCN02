@@ -1,4 +1,7 @@
 import React from 'react';
+import { Badge } from "@/components/ui/badge"
+import { AspectRatio } from "@/components/ui/aspect-ratio"
+
 
 const MovieCard = ({
   title = "Movie Title",
@@ -11,42 +14,30 @@ const MovieCard = ({
     <div className="group relative w-full max-w-[420px] mx-auto cursor-pointer">
       <div className="overflow-hidden rounded-lg">
         <div className="relative">
-          <div className="aspect-[2/3] rounded-lg transform transition-all duration-300 scale-80 group-hover:scale-100 group-hover:shadow-lg group-hover:shadow-black/40 dark:border dark:border-slate-800">
-            {image ? (
-              <img
-                src={image}
-                alt={title}
-                className="h-full w-full object-cover rounded-md"
-                loading="lazy"
-              />
-            ) : (
-              <div className="h-full w-full bg-gray-300 flex items-center justify-center rounded-md dark:bg-slate-950">
-                <div className="text-center text-gray-500 dark:text-slate-300">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-16 w-16 mx-auto mb-2"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"
-                    />
-                  </svg>
-                  <p className="text-sm font-medium">Movie Poster</p>
-                </div>
-              </div>
-            )}
-          </div>
+          <AspectRatio
+            ratio={2 / 3}
+            className="rounded-lg overflow-hidden transform transition-all duration-300
+                      scale-80 group-hover:scale-100
+                      group-hover:shadow-lg group-hover:shadow-black/40
+                      dark:border dark:border-slate-800"
+          >
+            <img
+              src={image}
+              alt={title}
+              loading="lazy"
+              className="h-full w-full object-cover"
+            />
+          </AspectRatio>
+
 
           {/* Rank badge */}
           {badge && (
-            <div className="absolute top-3 left-3 bg-sky-600 text-white text-xs font-semibold px-2 py-1 rounded-md shadow">
+            <Badge
+              variant="destructive"
+              className="absolute top-3 left-3"
+            >
               {badge}
-            </div>
+            </Badge>
           )}
 
           {/* Hover overlay */}

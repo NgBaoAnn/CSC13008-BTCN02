@@ -1,6 +1,4 @@
 import React from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import MovieCard from "@/components/movie/MovieCard";
 import TopMovieSlider from "@/components/movie/TopMovieSlider";
 import MostPopularSection from "@/components/movie/MostPopularSection";
 import TopRatedSection from "@/components/movie/TopRatedSection";

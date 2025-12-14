@@ -97,7 +97,7 @@ const TopRatedSection = () => {
 
   return (
     <section>
-      <h2 className="text-xl font-semibold mb-4 dark:text-slate-50 text-left">Top Rating</h2>
+      <h2 className="text-xl font-semibold dark:text-slate-50 text-left">Top Rating</h2>
 
       <div className="flex items-center gap-4">
         <button

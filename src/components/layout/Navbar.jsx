@@ -1,6 +1,8 @@
 import React from "react";
 import { Home } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 
 const Navbar = () => {
   return (
@@ -19,27 +21,33 @@ const Navbar = () => {
         <div className="flex items-center gap-4">
           {/* Simple nav links */}
           <div className="flex items-center gap-3 text-sm">
-            <Link to="/favorites" className="hover:underline">Favorites</Link>
-            <Link to="/profile" className="hover:underline">Profile</Link>
-            <Link to="/login" className="hover:underline">Login</Link>
+            <Link to="/favorites" className="hover:underline">
+              Favorites
+            </Link>
+            <Link to="/profile" className="hover:underline">
+              Profile
+            </Link>
+            <Link to="/login" className="hover:underline">
+              Login
+            </Link>
           </div>
 
-          {/* Search input (no logic) */}
+          {/* Search input (UI only) */}
           <div className="flex items-center gap-2">
-          <input
-            type="text"
-            placeholder="Search"
-            className="h-8 px-3 rounded border border-gray-300 text-sm bg-white
-                       focus:outline-none focus:ring-1 focus:ring-blue-400
-                       dark:bg-slate-950 dark:border-slate-800 dark:text-slate-300 dark:placeholder-slate-400"
-          />
+            <Input
+              type="text"
+              placeholder="Search"
+              className="h-8 w-[180px] text-sm"
+            />
 
-          <button
-            className="h-8 px-4 text-sm rounded border border-gray-400 bg-blue-50 cursor-pointer hover:bg-blue-200 transition
-                       dark:bg-sky-600 dark:text-slate-50 dark:border-slate-800 dark:hover:bg-sky-500"
-          >
-            Search
-          </button>
+            <Button
+              asChild
+              size="sm"
+              className="h-8 bg-transparent border border-green-500 text-green-600 hover:bg-green-50 hover:border-green-600"
+              
+            >
+              <Link to="/search">Search</Link>
+            </Button>
           </div>
         </div>
       </div>
