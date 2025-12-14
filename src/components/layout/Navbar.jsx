@@ -1,20 +1,31 @@
 import React from "react";
 import { Home } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
     <nav className="bg-blue-100 border-b border-blue-200 dark:bg-slate-950 dark:border-b dark:border-slate-800">
       <div className="h-12 px-4 flex items-center justify-between">
         {/* Left: Home icon */}
-        <button
+        <Link
+          to="/"
           className="p-2 rounded hover:bg-blue-200 transition dark:hover:bg-slate-900"
           title="Home"
         >
           <Home size={18} className="cursor-pointer dark:text-slate-50" />
-        </button>
+        </Link>
 
         {/* Right: Search */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
+          {/* Simple nav links */}
+          <div className="flex items-center gap-3 text-sm">
+            <Link to="/favorites" className="hover:underline">Favorites</Link>
+            <Link to="/profile" className="hover:underline">Profile</Link>
+            <Link to="/login" className="hover:underline">Login</Link>
+          </div>
+
+          {/* Search input (no logic) */}
+          <div className="flex items-center gap-2">
           <input
             type="text"
             placeholder="Search"
@@ -29,6 +40,7 @@ const Navbar = () => {
           >
             Search
           </button>
+          </div>
         </div>
       </div>
     </nav>
