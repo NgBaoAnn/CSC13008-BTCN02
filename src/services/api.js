@@ -80,7 +80,7 @@ export async function getTopRated(page = 1, limit = 3) {
  */
 export async function searchMoviesByTitle(title, page = 1, limit = 12) {
   const q = encodeURIComponent(title ?? "");
-  const url = `${API_URL}/movies/search?title=${q}&page=${page}&limit=${limit}`;
+  const url = `${API_URL}/movies/search?q=${q}&page=${page}&limit=${limit}`;
   const res = await fetch(url, {
     headers: {
       "x-app-token": API_TOKEN,
