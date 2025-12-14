@@ -44,3 +44,29 @@ export async function getMostPopular(page = 1, limit = 15) {
     pagination: json?.pagination ?? { current_page: page, total_pages: 1 },
   };
 }
+
+/**
+ * Fetch Top Rated movies (IMDB Top 50)
+ * @param {number} page
+ * @param {number} limit
+ * @returns {Promise<{ data: Array, pagination: { current_page: number, total_pages: number } }>} 
+ */
+export async function getTopRated(page = 1, limit = 3) {
+  const category = "IMDB_TOP_50";
+  const url = `${API_URL}/movies/top-rated?category=${category}&page=${page}&limit=${limit}`;
+  const res = await fetch(url, {
+    headers: {
+      "x-app-token": API_TOKEN,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status}`);
+  }
+
+  const json = await res.json();
+  return {
+    data: Array.isArray(json?.data) ? json.data : [],
+    pagination: json?.pagination ?? { current_page: page, total_pages: 1 },
+  };
+}
