@@ -70,3 +70,30 @@ export async function getTopRated(page = 1, limit = 3) {
     pagination: json?.pagination ?? { current_page: page, total_pages: 1 },
   };
 }
+
+/**
+ * Search movies by title
+ * @param {string} title
+ * @param {number} page
+ * @param {number} limit
+ * @returns {Promise<{ data: Array, pagination: { total_items: number, current_page: number, total_pages: number, page_size: number } }>} 
+ */
+export async function searchMoviesByTitle(title, page = 1, limit = 12) {
+  const q = encodeURIComponent(title ?? "");
+  const url = `${API_URL}/movies/search?title=${q}&page=${page}&limit=${limit}`;
+  const res = await fetch(url, {
+    headers: {
+      "x-app-token": API_TOKEN,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status}`);
+  }
+
+  const json = await res.json();
+  return {
+    data: Array.isArray(json?.data) ? json.data : [],
+    pagination: json?.pagination ?? { current_page: page, total_pages: 1, total_items: 0, page_size: limit },
+  };
+}

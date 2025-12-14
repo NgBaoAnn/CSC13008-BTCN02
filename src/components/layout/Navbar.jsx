@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Home } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const [keyword, setKeyword] = useState("");
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const trimmed = keyword.trim();
+    if (!trimmed) return;
+    navigate(`/search?title=${encodeURIComponent(trimmed)}&page=1`);
+  };
   return (
     <nav className="bg-blue-100 border-b border-blue-200 dark:bg-slate-950 dark:border-b dark:border-slate-800">
       <div className="h-12 px-4 flex items-center justify-between">
@@ -32,23 +41,23 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Search input (UI only) */}
-          <div className="flex items-center gap-2">
+          {/* Search by title */}
+          <form onSubmit={onSubmit} className="flex items-center gap-2">
             <Input
               type="text"
-              placeholder="Search"
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+              placeholder="Search by title"
               className="h-8 w-[180px] text-sm"
             />
-
             <Button
-              asChild
+              type="submit"
               size="sm"
               className="h-8 bg-transparent border border-green-500 text-green-600 hover:bg-green-50 hover:border-green-600"
-              
             >
-              <Link to="/search">Search</Link>
+              Search
             </Button>
-          </div>
+          </form>
         </div>
       </div>
     </nav>
