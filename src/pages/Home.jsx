@@ -1,6 +1,7 @@
 import React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import MovieCard from "@/components/movie/MovieCard";
+import TopMovieSlider from "@/components/movie/TopMovieSlider";
 
 const Home = () => {
   return (
@@ -8,18 +9,12 @@ const Home = () => {
       <div className="max-w-[1200px] mx-auto px-4 py-6 space-y-12">
 
         {/* ===== Featured Movie ===== */}
-        <section className="flex items-center justify-center gap-10 dark:bg-slate-900 dark:rounded-lg">
-          <button className="p-2 text-gray-400 hover:text-gray-700 transition">
-            <ChevronLeft size={32} className="dark:text-slate-400 dark:hover:text-sky-500 transition" />
-          </button>
 
-          <div className="flex-1 flex justify-center">
-            <MovieCard featured/>
-          </div>
 
-          <button className="p-2 text-gray-400 hover:text-gray-700 transition">
-            <ChevronRight size={32} className="dark:text-slate-400 dark:hover:text-sky-500 transition" />
-          </button>
+        {/* ===== Top 5 Movies (Box Office) ===== */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 dark:text-slate-50 text-left">Top 5 Movies</h2>
+          <TopMovieSlider />
         </section>
 
         {/* ===== Most Popular ===== */}
