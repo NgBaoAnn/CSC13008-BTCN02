@@ -5,19 +5,21 @@ import MovieCard from "@/components/movie/MovieCard";
 import { getMostPopular } from "@/services/api";
 
 function MostPopularSection() {
-  const [page, setPage] = useState(1);
-  const [movies, setMovies] = useState([]);
+  const [chunkPage, setChunkPage] = useState(1); // page fetching 15 items
+  const [movies, setMovies] = useState([]); // 0..14 within chunk
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [windowStart, setWindowStart] = useState(0); // start index of 3-card window
 
-  const fetchPage = useCallback(async (p) => {
+  const fetchChunk = useCallback(async (p) => {
     setLoading(true);
     setError(null);
     try {
-      const { data, pagination } = await getMostPopular(p, 3);
+      const { data, pagination } = await getMostPopular(p, 15);
       setMovies(data);
       setTotalPages(pagination?.total_pages ?? 1);
+      setWindowStart(0);
     } catch (e) {
       console.error("Most Popular fetch error:", e);
       setError("Failed to load Most Popular movies.");
@@ -27,17 +29,29 @@ function MostPopularSection() {
   }, []);
 
   useEffect(() => {
-    fetchPage(page);
-  }, [page, fetchPage]);
+    fetchChunk(chunkPage);
+  }, [chunkPage, fetchChunk]);
 
-  const canPrev = page > 1;
-  const canNext = page < totalPages;
+  const canPrevChunk = chunkPage > 1;
+  const canNextChunk = chunkPage < totalPages;
 
   const prev = () => {
-    if (canPrev) setPage((p) => Math.max(1, p - 1));
+    if (windowStart >= 3) {
+      setWindowStart((s) => s - 3);
+    } else if (canPrevChunk) {
+      setChunkPage((p) => Math.max(1, p - 1));
+      // After loading previous chunk set window to last full trio (index 12)
+      setTimeout(() => setWindowStart(12), 0);
+    }
   };
+
   const next = () => {
-    if (canNext) setPage((p) => Math.min(totalPages, p + 1));
+    if (windowStart + 3 <= 12 && windowStart + 3 < movies.length) {
+      setWindowStart((s) => s + 3);
+    } else if (canNextChunk) {
+      setChunkPage((p) => Math.min(totalPages, p + 1));
+      setTimeout(() => setWindowStart(0), 0);
+    }
   };
 
   return (
@@ -56,15 +70,15 @@ function MostPopularSection() {
         <div className="flex items-center gap-4">
           <button
             onClick={prev}
-            disabled={!canPrev}
-            className={`text-gray-400 transition ${canPrev ? "hover:text-gray-700" : "opacity-50 cursor-not-allowed"}`}
-            aria-label="Previous page"
+            disabled={!canPrevChunk && windowStart === 0}
+            className={`text-gray-400 transition ${!canPrevChunk && windowStart === 0 ? "opacity-50 cursor-not-allowed" : "hover:text-gray-700"}`}
+            aria-label="Previous"
           >
             <ChevronLeft size={24} className="dark:text-slate-400 dark:hover:text-sky-500 transition" />
           </button>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 flex-1 dark:p-4 dark:rounded-lg">
-            {movies.map((m) => (
+            {movies.slice(windowStart, windowStart + 3).map((m) => (
               <Link key={m.id} to={`/movie/${m.id}`} className="block">
                 <MovieCard featured title={m.title} image={m.image} rate={m.rate} year={m.year} />
               </Link>
@@ -73,9 +87,9 @@ function MostPopularSection() {
 
           <button
             onClick={next}
-            disabled={!canNext}
-            className={`text-gray-400 transition ${canNext ? "hover:text-gray-700" : "opacity-50 cursor-not-allowed"}`}
-            aria-label="Next page"
+            disabled={!canNextChunk && (windowStart + 3 >= movies.length || windowStart >= 12)}
+            className={`text-gray-400 transition ${!canNextChunk && (windowStart + 3 >= movies.length || windowStart >= 12) ? "opacity-50 cursor-not-allowed" : "hover:text-gray-700"}`}
+            aria-label="Next"
           >
             <ChevronRight size={24} className="dark:text-slate-400 dark:hover:text-sky-500 transition" />
           </button>

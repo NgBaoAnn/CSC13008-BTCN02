@@ -26,7 +26,7 @@ export async function getTopMovies() {
  * @param {number} limit
  * @returns {Promise<{ data: Array, pagination: { current_page: number, total_pages: number } }>} 
  */
-export async function getMostPopular(page = 1, limit = 3) {
+export async function getMostPopular(page = 1, limit = 15) {
   const url = `${API_URL}/movies/most-popular?page=${page}&limit=${limit}`;
   const res = await fetch(url, {
     headers: {
