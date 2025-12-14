@@ -6,15 +6,16 @@ const ThemeContext = createContext({
 });
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState("light");
-
-  // Initialize from localStorage on first mount
-  useEffect(() => {
-    const saved = typeof window !== "undefined" ? localStorage.getItem("theme") : null;
-    if (saved === "dark" || saved === "light") {
-      setTheme(saved);
+  const [theme, setTheme] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("theme");
+      if (saved === "dark" || saved === "light") return saved;
+      if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        return "dark";
+      }
     }
-  }, []);
+    return "light";
+  });
 
   // Persist and apply class to html element for Tailwind dark mode (class strategy)
   useEffect(() => {

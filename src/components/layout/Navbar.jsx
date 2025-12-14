@@ -3,14 +3,14 @@ import { Home } from "lucide-react";
 
 const Navbar = () => {
   return (
-    <nav className="bg-blue-100 border-b border-blue-200 dark:bg-gray-800 dark:border-gray-700">
+    <nav className="bg-blue-100 border-b border-blue-200 dark:bg-slate-950 dark:border-b dark:border-slate-800">
       <div className="h-12 px-4 flex items-center justify-between">
         {/* Left: Home icon */}
         <button
-          className="p-2 rounded hover:bg-blue-200 transition dark:hover:bg-gray-700"
+          className="p-2 rounded hover:bg-blue-200 transition dark:hover:bg-slate-900"
           title="Home"
         >
-          <Home size={18} className="text-gray-700 dark:text-gray-100" />
+          <Home size={18} className="text-gray-700 dark:text-slate-50" />
         </button>
 
         {/* Right: Search */}
@@ -20,12 +20,12 @@ const Navbar = () => {
             placeholder="Search"
             className="h-8 px-3 rounded border border-gray-300 text-sm bg-white
                        focus:outline-none focus:ring-1 focus:ring-blue-400
-                       dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                       dark:bg-slate-950 dark:border-slate-800 dark:text-slate-300 dark:placeholder-slate-400"
           />
 
           <button
             className="h-8 px-4 text-sm rounded border border-gray-400 bg-blue-50 hover:bg-blue-200 transition
-                       dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 dark:hover:bg-gray-600"
+                       dark:bg-sky-600 dark:text-slate-50 dark:border-slate-800 dark:hover:bg-sky-500"
           >
             Search
           </button>
