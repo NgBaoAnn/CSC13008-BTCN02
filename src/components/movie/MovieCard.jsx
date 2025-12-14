@@ -66,7 +66,7 @@ const MovieCard = ({ title = "Movie Title", featured = false }) => {
 
       {/* Movie Title */}
       <div className="px-1">
-        <h3 className="font-medium text-gray-800 text-center line-clamp-2 group-hover:text-sky-500 transition-colors dark:text-slate-300">
+        <h3 className="font-medium text-gray-800 text-center line-clamp-2 transition-all duration-300 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:text-sky-500 dark:text-slate-300">
           {title}
         </h3>
       </div>

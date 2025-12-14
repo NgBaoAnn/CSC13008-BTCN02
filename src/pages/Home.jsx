@@ -13,8 +13,8 @@ const Home = () => {
             <ChevronLeft size={32} className="dark:text-slate-400 dark:hover:text-sky-500 transition" />
           </button>
 
-          <div className="flex-1 flex items-center justify-center">
-            <MovieCard featured title="Featured Movie" />
+          <div className="flex-1 flex justify-center">
+            <MovieCard featured/>
           </div>
 
           <button className="p-2 text-gray-400 hover:text-gray-700 transition">
@@ -24,7 +24,7 @@ const Home = () => {
 
         {/* ===== Most Popular ===== */}
         <section>
-          <h2 className="text-xl font-semibold mb-4 dark:text-slate-50">Most Popular</h2>
+          <h2 className="text-xl font-semibold mb-4 dark:text-slate-50 text-left">Most Popular</h2>
 
           <div className="flex gap-4">
             <button className="text-gray-400 hover:text-gray-700">
@@ -32,9 +32,9 @@ const Home = () => {
             </button>
 
             <div className="grid grid-cols-3 gap-6 flex-1 dark:p-4 dark:rounded-lg">
-              <MovieCard />
-              <MovieCard />
-              <MovieCard />
+              <MovieCard featured/>
+              <MovieCard featured/>
+              <MovieCard featured/>
             </div>
 
             <button className="text-gray-400 hover:text-gray-700">
@@ -45,7 +45,7 @@ const Home = () => {
 
         {/* ===== Top Rating ===== */}
         <section>
-          <h2 className="text-xl font-semibold mb-4 dark:text-slate-50">Top Rating</h2>
+          <h2 className="text-xl font-semibold mb-4 dark:text-slate-50 text-left">Top Rating</h2>
 
           <div className="flex items-center gap-4">
             <button className="text-gray-400 hover:text-gray-700">
@@ -53,9 +53,9 @@ const Home = () => {
             </button>
 
             <div className="grid grid-cols-3 gap-6 flex-1 dark:p-4 dark:rounded-lg">
-              <MovieCard />
-              <MovieCard />
-              <MovieCard />
+              <MovieCard featured/>
+              <MovieCard featured/>
+              <MovieCard featured/>
             </div>
 
             <button className="text-gray-400 hover:text-gray-700">

@@ -22,7 +22,7 @@ const Header = () => {
 
         {/* Right: Icons */}
         <div className="absolute right-4 flex items-center gap-3">
-          <Switch checked={isDark} onCheckedChange={toggleTheme} />
+          <Switch className="cursor-pointer" checked={isDark} onCheckedChange={toggleTheme} />
 
           <button
             className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700 transition

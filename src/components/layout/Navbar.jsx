@@ -10,7 +10,7 @@ const Navbar = () => {
           className="p-2 rounded hover:bg-blue-200 transition dark:hover:bg-slate-900"
           title="Home"
         >
-          <Home size={18} className="text-gray-700 dark:text-slate-50" />
+          <Home size={18} className="cursor-pointer dark:text-slate-50" />
         </button>
 
         {/* Right: Search */}
@@ -24,7 +24,7 @@ const Navbar = () => {
           />
 
           <button
-            className="h-8 px-4 text-sm rounded border border-gray-400 bg-blue-50 hover:bg-blue-200 transition
+            className="h-8 px-4 text-sm rounded border border-gray-400 bg-blue-50 cursor-pointer hover:bg-blue-200 transition
                        dark:bg-sky-600 dark:text-slate-50 dark:border-slate-800 dark:hover:bg-sky-500"
           >
             Search
