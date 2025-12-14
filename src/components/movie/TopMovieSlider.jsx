@@ -55,7 +55,6 @@ function TopMovieSlider() {
 
         <Link to={`/movie/${movie.id}`} className="max-w-md w-full">
           <MovieCard
-            featured
             title={movie.title}
             image={movie.image}
             rate={movie.rate}
