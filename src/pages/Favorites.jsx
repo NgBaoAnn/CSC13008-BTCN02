@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import useFavorites from '@/hooks/useFavorites'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
@@ -6,9 +6,11 @@ import { Button } from '@/components/ui/button'
 import Skeleton from '@/components/ui/skeleton'
 import MovieCard from '@/components/movie/MovieCard'
 import BackButton from '@/components/common/BackButton'
+import Spinner from '@/components/ui/spinner'
 
 const Favorites = () => {
   const { favorites, loading, removeFavorite } = useFavorites({ autoLoad: true })
+  const [removingId, setRemovingId] = useState(null)
 
   const items = Array.isArray(favorites) ? favorites : []
 
@@ -55,9 +57,26 @@ const Favorites = () => {
                 <CardFooter className="flex-col items-stretch gap-3">
                   <Button
                     variant="outline"
-                    onClick={() => removeFavorite(id)}
+                    onClick={async () => {
+                      if (!id || removingId) return
+                      setRemovingId(id)
+                      try {
+                        await removeFavorite(id)
+                      } finally {
+                        setRemovingId(null)
+                      }
+                    }}
+                    disabled={!id || removingId === id}
+                    className="relative"
                   >
-                    Remove
+                    {removingId === id ? (
+                      <span className="flex items-center gap-2">
+                        <Spinner className="h-4 w-4" />
+                        Removing...
+                      </span>
+                    ) : (
+                      'Remove'
+                    )}
                   </Button>
                 </CardFooter>
               </Card>

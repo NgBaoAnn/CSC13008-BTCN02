@@ -97,7 +97,7 @@ const Navbar = () => {
           ) : (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="flex items-center gap-2 rounded px-2 py-1 hover:bg-blue-200 dark:hover:bg-slate-900">
+                <button className="flex items-center gap-2 rounded px-2 py-1 hover:bg-blue-200 dark:hover:bg-slate-900 cursor-pointer">
                   <Avatar className="h-8 w-8">
                     <AvatarImage
                       src={"https://github.com/shadcn.png"}
