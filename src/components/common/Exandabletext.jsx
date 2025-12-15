@@ -30,7 +30,7 @@ const ExpandableText = ({
 
       <button
         onClick={handleToggle}
-        className={`mt-2 text-sm font-medium text-gray-100 hover:underline ${buttonClassName}`}
+        className={`mt-2 text-sm text-black font-medium dark:text-slate-100 hover:underline ${buttonClassName}`}
       >
         {isEnd ? "Thu gọn" : "Xem thêm"}
       </button>

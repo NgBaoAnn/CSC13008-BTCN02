@@ -99,6 +99,29 @@ export async function searchMoviesByTitle(title, page = 1, limit = 12) {
 }
 
 /**
+ * Fetch reviews for a given movie id
+ * @param {string} movieId
+ * @param {number} page
+ * @param {number} limit
+ * @param {"newest"|"oldest"|"highest"|"lowest"} sort
+ * @returns {Promise<{ data: Array, pagination: { total_items: number, current_page: number, total_pages: number, page_size: number } }>} 
+ */
+export async function getMovieReviews(movieId, page = 1, limit = 5, sort = 'newest') {
+  if (!movieId) throw new Error('Movie id is required');
+  const url = `${API_URL}/movies/${encodeURIComponent(movieId)}/reviews?page=${page}&limit=${limit}&sort=${encodeURIComponent(sort)}`;
+  const res = await fetch(url, {
+    headers: { 'x-app-token': API_TOKEN },
+  });
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status}`);
+  }
+  const json = await res.json();
+  return {
+    data: Array.isArray(json?.data) ? json.data : [],
+    pagination: json?.pagination ?? { current_page: page, total_pages: 1, total_items: 0, page_size: limit },
+  };
+}
+/**
  * Get movie detail by id
  * @param {string|number} id
  * @returns {Promise<Object>}

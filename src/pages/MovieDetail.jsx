@@ -5,6 +5,9 @@ import ExpandableText from "@/components/common/Exandabletext"
 import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import PersonCard from "@/components/common/PersonCard"
+import ReviewList from "@/components/review/ReviewList"
+import MovieCard from "@/components/movie/MovieCard"
+import { Link } from "react-router-dom"
 
 
 
@@ -33,7 +36,6 @@ const MovieDetail = () => {
     if (id) fetchMovie()
     return () => (cancelled = true)
   }, [id])
-
   /* ================= UI STATES ================= */
 
   if (loading) {
@@ -60,7 +62,6 @@ const MovieDetail = () => {
     title,
     year,
     image,
-    rate,
     runtime,
     genres,
     plot_full,
@@ -68,12 +69,19 @@ const MovieDetail = () => {
     awards,
     directors,
     actors,
+    countries,
+    languages,
+    ratings,
+    similar_movies,
   } = movie
 
   const poster = image || "https://via.placeholder.com/400x600"
   const safeGenres = Array.isArray(genres) ? genres : []
   const safeDirectors = Array.isArray(directors) ? directors : []
   const safeActors = Array.isArray(actors) ? actors : []
+  const safeCountries = Array.isArray(countries) ? countries : []
+  const safeLanguages = Array.isArray(languages) ? languages : []
+  const safeSimilar = Array.isArray(similar_movies) ? similar_movies : []
 
   /* ================= UI ================= */
 
@@ -101,16 +109,17 @@ const MovieDetail = () => {
 
         {/* Meta */}
           <div className="flex flex-wrap items-center gap-3 text-sm">
-            {typeof rate === "number" ? (
-              <Badge variant="secondary" className="gap-1">{rate.toFixed(1)}</Badge>
-            ) : (
-              <Badge variant="outline">No rating</Badge>
-            )}
+            {(() => {
+              const displayRate = ratings?.imDb
+              return displayRate !== null && displayRate !== undefined && String(displayRate).trim() !== ""
+                ? (<Badge variant="secondary" className="gap-1">IMDb: {String(displayRate)}</Badge>)
+                : (<Badge variant="outline">No rating</Badge>)
+            })()}
 
             {runtime && (
               <>
                 <span className="text-gray-400 dark:text-slate-500">•</span>
-                <span className="text-gray-700 dark:text-slate-300">{runtime}</span>
+                <Badge variant="secondary">{runtime}</Badge>
               </>
             )}
 
@@ -120,6 +129,28 @@ const MovieDetail = () => {
                 <div className="flex flex-wrap gap-2">
                   {safeGenres.map((g) => (
                     <Badge key={g} variant="outline">{g}</Badge>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {safeCountries.length > 0 && (
+              <>
+                <span className="text-gray-400 dark:text-slate-500">•</span>
+                <div className="flex flex-wrap gap-2">
+                  {safeCountries.map((c) => (
+                    <Badge key={c} variant="outline">{c}</Badge>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {safeLanguages.length > 0 && (
+              <>
+                <span className="text-gray-400 dark:text-slate-500">•</span>
+                <div className="flex flex-wrap gap-2">
+                  {safeLanguages.map((l) => (
+                    <Badge key={l} variant="outline">{l}</Badge>
                   ))}
                 </div>
               </>
@@ -145,11 +176,50 @@ const MovieDetail = () => {
               <AlertDescription>🏆 {awards}</AlertDescription>
             </Alert>
           )}
+
+          
         </div>
+
+
         <div className="mt-14 space-y-10">
+          {/* ===== REVIEWS ===== */}
+          <section className="px-6 md:px-10">
+            <ReviewList movieId={id} initialLimit={5} />
+          </section>
+
+          {/* ===== SIMILAR MOVIES ===== */}
+          {safeSimilar.length > 0 && (
+            <section className="mt-12">
+              <h2 className="mb-4 text-xl font-semibold text-left text-gray-900 dark:text-slate-100">
+                More Like This
+              </h2>
+
+              <div className="relative">
+                <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+                  {safeSimilar.map((m) => (
+                    <Link
+                      key={m.id}
+                      to={`/movie/${m.id}`}
+                      className="min-w-[160px] sm:min-w-[180px] md:min-w-[200px]"
+                    >
+                      <MovieCard
+                        title={m.title}
+                        image={m.image}
+                        rate={m.rate}
+                        year={m.year}
+                      />
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+          )}
           {/* Directors */}
           <section>
             <h2 className="text-xl font-semibold mb-4 text-left text-gray-900 dark:text-slate-100">Directors</h2>
+
+
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {safeDirectors.map((d) => (
                 <li key={d.id || d.name}>
@@ -172,8 +242,6 @@ const MovieDetail = () => {
           </section>
         </div>
       </div>
-
-      {/* ===== PEOPLE ===== */}
 
     </div>
   )
