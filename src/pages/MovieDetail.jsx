@@ -9,6 +9,8 @@ import ReviewList from "@/components/review/ReviewList"
 import MovieCard from "@/components/movie/MovieCard"
 import { Link } from "react-router-dom"
 import Skeleton from "@/components/ui/skeleton"
+import useFavorites from "@/hooks/useFavorites"
+import FavoriteToggle from "@/components/movie/FavoriteToggle"
 
 
 
@@ -18,6 +20,13 @@ const MovieDetail = () => {
   const [movie, setMovie] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [toggling, setToggling] = useState(false)
+
+  const {
+    loading: favLoading,
+    isFavorite,
+    toggleFavorite,
+  } = useFavorites({ autoLoad: true })
 
   useEffect(() => {
     let cancelled = false
@@ -122,12 +131,29 @@ const MovieDetail = () => {
       {/* ===== CONTENT BELOW COVER ===== */}
       <div className="px-6 md:px-10 py-8">
         <div className="flex flex-col gap-4">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-slate-100 text-left">
-            {title}
-            {year && (
-              <span className="ml-2 text-gray-500 dark:text-slate-400 font-normal">({year})</span>
-            )}
-          </h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-slate-100 text-left">
+              {title}
+              {year && (
+                <span className="ml-2 text-gray-500 dark:text-slate-400 font-normal">({year})</span>
+              )}
+            </h1>
+            {/* Favorite toggle */}
+            <FavoriteToggle
+              pressed={isFavorite(id)}
+              onPressedChange={async () => {
+                try {
+                  setToggling(true)
+                  await toggleFavorite(id)
+                } finally {
+                  setToggling(false)
+                }
+              }}
+              disabled={favLoading || toggling}
+              className="ml-1"
+              size="sm"
+            />
+          </div>
 
         {/* Meta */}
           <div className="flex flex-wrap items-center gap-3 text-sm">

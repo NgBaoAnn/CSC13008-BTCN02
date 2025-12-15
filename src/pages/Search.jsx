@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import MovieCard from '@/components/movie/MovieCard';
 import { searchMoviesByTitle } from '@/services/api';
-import Pagination from '@/components/common/Pagination';
+import { Pagination, PaginationContent, PaginationItem, PaginationPrevious, PaginationNext } from '@/components/ui/pagination';
 import Skeleton from '@/components/ui/skeleton';
 
 const Search = () => {
@@ -84,14 +84,23 @@ const Search = () => {
       )}
 
       {!loading && pagination.total_pages > 1 && (
-        <Pagination
-          canPrev={canPrev}
-          canNext={canNext}
-          onPrev={() => canPrev && goToPage(pagination.current_page - 1)}
-          onNext={() => canNext && goToPage(pagination.current_page + 1)}
-          currentPage={pagination.current_page}
-          totalPages={pagination.total_pages}
-        />
+        <Pagination className="mt-6">
+          <PaginationContent>
+            <PaginationPrevious
+              onClick={() => canPrev && goToPage(pagination.current_page - 1)}
+              aria-disabled={!canPrev}
+              data-disabled={!canPrev}
+            />
+            <PaginationItem>
+              <span className="px-3 text-sm">Page {pagination.current_page} of {pagination.total_pages}</span>
+            </PaginationItem>
+            <PaginationNext
+              onClick={() => canNext && goToPage(pagination.current_page + 1)}
+              aria-disabled={!canNext}
+              data-disabled={!canNext}
+            />
+          </PaginationContent>
+        </Pagination>
       )}
     </div>
   );

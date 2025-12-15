@@ -319,3 +319,80 @@ export async function updateUserProfile(payload) {
   }
   return json;
 }
+
+/**
+ * FAVORITES APIs
+ */
+export async function getFavorites() {
+  const token = getAccessToken();
+  if (!token) {
+    const err = new Error('Missing access token');
+    err.status = 401;
+    throw err;
+  }
+
+  const res = await fetch(`${API_URL}/users/favorites`, {
+    method: 'GET',
+    headers: {
+      'x-app-token': API_TOKEN,
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const err = new Error(json?.message || `Favorites fetch failed (HTTP ${res.status})`);
+    err.status = res.status;
+    throw err;
+  }
+  return Array.isArray(json) ? json : (Array.isArray(json?.data) ? json.data : []);
+}
+
+export async function addFavorite(movieId) {
+  const token = getAccessToken();
+  if (!token) {
+    const err = new Error('Missing access token');
+    err.status = 401;
+    throw err;
+  }
+  if (!movieId) throw new Error('movieId is required');
+
+  const res = await fetch(`${API_URL}/users/favorites/${encodeURIComponent(movieId)}`, {
+    method: 'POST',
+    headers: {
+      'x-app-token': API_TOKEN,
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const err = new Error(json?.message || `Add favorite failed (HTTP ${res.status})`);
+    err.status = res.status;
+    throw err;
+  }
+  return json;
+}
+
+export async function removeFavorite(movieId) {
+  const token = getAccessToken();
+  if (!token) {
+    const err = new Error('Missing access token');
+    err.status = 401;
+    throw err;
+  }
+  if (!movieId) throw new Error('movieId is required');
+
+  const res = await fetch(`${API_URL}/users/favorites/${encodeURIComponent(movieId)}`, {
+    method: 'DELETE',
+    headers: {
+      'x-app-token': API_TOKEN,
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const err = new Error(json?.message || `Remove favorite failed (HTTP ${res.status})`);
+    err.status = res.status;
+    throw err;
+  }
+  return json;
+}

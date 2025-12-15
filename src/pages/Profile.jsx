@@ -33,6 +33,7 @@ const Profile = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [editMode, setEditMode] = useState(false);
 
   const {
     register,
@@ -53,7 +54,7 @@ const Profile = () => {
       })
       .catch((err) => {
         if (!mounted) return;
-        if (err?.status === 403) {
+        if (err?.status === 403 || err?.status === 401) {
           try { logout?.(); } catch (_) {}
           navigate('/login');
           return;
@@ -75,8 +76,9 @@ const Profile = () => {
       setProfile(updated);
       reset({ email: updated.email || '', phone: updated.phone || '', dob: updated.dob || '' });
       setSuccess('Profile updated successfully');
+      setEditMode(false);
     } catch (err) {
-      if (err?.status === 403) {
+      if (err?.status === 403 || err?.status === 401) {
         try { logout?.(); } catch (_) {}
         navigate('/login');
         return;
@@ -108,55 +110,74 @@ const Profile = () => {
         {success && (
           <div className="text-sm text-green-600 mb-3" role="status">{success}</div>
         )}
-
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div className="grid md:grid-cols-2 gap-4">
-            <div>
-              <label className="text-sm font-medium" htmlFor="username">Username</label>
-              <Input id="username" value={profile?.username || ''} disabled className="mt-1" />
+        {!editMode && (
+          <div className="space-y-4">
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium">Email</label>
+                <div className="mt-1 text-sm">{profile?.email || '—'}</div>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Phone</label>
+                <div className="mt-1 text-sm">{profile?.phone || '—'}</div>
+              </div>
             </div>
-            <div>
-              <label className="text-sm font-medium" htmlFor="role">Role</label>
-              <Input id="role" value={profile?.role || ''} disabled className="mt-1" />
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium">Date of Birth</label>
+                <div className="mt-1 text-sm">{profile?.dob || '—'}</div>
+              </div>
             </div>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4">
-            <div>
-              <label className="text-sm font-medium" htmlFor="email">Email</label>
-              <Input id="email" type="email" placeholder="you@example.com"
-                disabled={loading || submitting} className="mt-1" {...register('email')} />
-              {errors.email && (
-                <p className="text-xs text-red-600 mt-1">{errors.email.message}</p>
-              )}
-            </div>
-            <div>
-              <label className="text-sm font-medium" htmlFor="phone">Phone</label>
-              <Input id="phone" type="text" placeholder="Optional"
-                disabled={loading || submitting} className="mt-1" {...register('phone')} />
-              {errors.phone && (
-                <p className="text-xs text-red-600 mt-1">{errors.phone.message}</p>
-              )}
+            <div className="flex justify-end">
+              <Button className="text-black dark:hover:text-white" variant="secondary" onClick={() => setEditMode(true)} disabled={loading}>
+                Changes
+              </Button>
             </div>
           </div>
+        )}
 
-          <div className="grid md:grid-cols-2 gap-4">
-            <div>
-              <label className="text-sm font-medium" htmlFor="dob">Date of Birth</label>
-              <Input id="dob" type="date" placeholder="YYYY-MM-DD"
-                disabled={loading || submitting} className="mt-1" {...register('dob')} />
-              {errors.dob && (
-                <p className="text-xs text-red-600 mt-1">{errors.dob.message}</p>
-              )}
+        {editMode && (
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium" htmlFor="email">Email</label>
+                <Input id="email" type="email" placeholder="you@example.com"
+                  disabled={loading || submitting} className="mt-1" {...register('email')} />
+                {errors.email && (
+                  <p className="text-xs text-red-600 mt-1">{errors.email.message}</p>
+                )}
+              </div>
+              <div>
+                <label className="text-sm font-medium" htmlFor="phone">Phone</label>
+                <Input id="phone" type="text" placeholder="Optional"
+                  disabled={loading || submitting} className="mt-1" {...register('phone')} />
+                {errors.phone && (
+                  <p className="text-xs text-red-600 mt-1">{errors.phone.message}</p>
+                )}
+              </div>
             </div>
-          </div>
 
-          <div className="flex justify-end gap-3 pt-2">
-            <Button type="submit" disabled={loading || submitting}>
-              {submitting ? 'Saving…' : 'Save Changes'}
-            </Button>
-          </div>
-        </form>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium" htmlFor="dob">Date of Birth</label>
+                <Input id="dob" type="date" placeholder="YYYY-MM-DD"
+                  disabled={loading || submitting} className="mt-1" {...register('dob')} />
+                {errors.dob && (
+                  <p className="text-xs text-red-600 mt-1">{errors.dob.message}</p>
+                )}
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 pt-2">
+              <Button type="button" variant="outline" onClick={() => { reset({ email: profile?.email || '', phone: profile?.phone || '', dob: profile?.dob || '' }); setEditMode(false); }} disabled={submitting}>
+                Cancel
+              </Button>
+              <Button type="submit"  disabled={loading || submitting}>
+                {submitting ? 'Saving…' : 'Save Changes'}
+              </Button>
+            </div>
+          </form>
+        )}
       </Card>
     </div>
   );

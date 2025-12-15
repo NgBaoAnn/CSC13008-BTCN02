@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { getMovieReviews } from "@/services/api"
 import { Badge } from "@/components/ui/badge"
-import Pagination from "@/components/common/Pagination"
+import { Pagination, PaginationContent, PaginationItem, PaginationPrevious, PaginationNext } from "@/components/ui/pagination"
 import ExpandableText from "@/components/common/Exandabletext"
 import Skeleton from "@/components/ui/skeleton"
 
@@ -126,14 +126,23 @@ const ReviewList = ({ movieId, initialLimit = 5 }) => {
 
       {/* Pagination */}
       {!loading && pagination.total_pages > 1 && (
-        <Pagination
-          canPrev={canPrev}
-          canNext={canNext}
-          onPrev={goPrev}
-          onNext={goNext}
-          currentPage={pagination.current_page}
-          totalPages={pagination.total_pages}
-        />
+        <Pagination className="mt-6">
+          <PaginationContent>
+            <PaginationPrevious
+              onClick={goPrev}
+              aria-disabled={!canPrev}
+              data-disabled={!canPrev}
+            />
+            <PaginationItem>
+              <span className="px-3 text-sm">Page {pagination.current_page} of {pagination.total_pages}</span>
+            </PaginationItem>
+            <PaginationNext
+              onClick={goNext}
+              aria-disabled={!canNext}
+              data-disabled={!canNext}
+            />
+          </PaginationContent>
+        </Pagination>
       )}
     </div>
   )
