@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import MovieCard from "@/components/movie/MovieCard";
 import { getMostPopular } from "@/services/api";
+import Skeleton from "@/components/ui/skeleton";
 
 function MostPopularSection() {
   const [chunkPage, setChunkPage] = useState(1); // page fetching 15 items
@@ -59,8 +60,14 @@ function MostPopularSection() {
       <h2 className="text-xl font-semibold dark:text-slate-50 text-left">Most Popular</h2>
 
       {loading ? (
-        <div className="flex items-center justify-center py-6">
-          <span className="text-gray-500 dark:text-slate-300">Loading…</span>
+        <div className="flex items-center gap-4">
+          <Skeleton className="h-6 w-6" />
+          <div className="grid grid-cols-1 sm:grid-cols-3 flex-1 dark:p-4 dark:rounded-lg gap-6">
+            <MovieCard loading />
+            <MovieCard loading />
+            <MovieCard loading />
+          </div>
+          <Skeleton className="h-6 w-6" />
         </div>
       ) : error ? (
         <div className="flex items-center justify-center py-6">

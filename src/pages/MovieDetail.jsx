@@ -8,6 +8,7 @@ import PersonCard from "@/components/common/PersonCard"
 import ReviewList from "@/components/review/ReviewList"
 import MovieCard from "@/components/movie/MovieCard"
 import { Link } from "react-router-dom"
+import Skeleton from "@/components/ui/skeleton"
 
 
 
@@ -40,8 +41,29 @@ const MovieDetail = () => {
 
   if (loading) {
     return (
-      <div className="h-[60vh] flex items-center justify-center text-gray-400">
-        Loading movie…
+      <div className="max-w-7xl mx-auto">
+        <div className="relative h-[50vh] md:h-[60vh] w-full overflow-hidden">
+          <Skeleton className="absolute inset-0 w-full h-full" />
+        </div>
+        <div className="px-6 md:px-10 py-8">
+          <div className="space-y-4">
+            <Skeleton className="h-8 w-1/2" />
+            <div className="flex gap-2">
+              <Skeleton className="h-6 w-20" />
+              <Skeleton className="h-6 w-16" />
+              <Skeleton className="h-6 w-24" />
+            </div>
+            <Skeleton className="h-24 w-full" />
+          </div>
+          <div className="mt-10">
+            <Skeleton className="h-6 w-40 mb-4" />
+            <div className="flex gap-4 overflow-x-auto pb-4">
+              <Skeleton className="h-64 w-40" />
+              <Skeleton className="h-64 w-40" />
+              <Skeleton className="h-64 w-40" />
+            </div>
+          </div>
+        </div>
       </div>
     )
   }

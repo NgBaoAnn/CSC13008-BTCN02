@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getPersonDetail } from '@/services/api';
 import { Button } from '@/components/ui/button';
+import Skeleton from '@/components/ui/skeleton';
 import { ChevronLeft } from 'lucide-react';
 
 const PersonDetail = () => {
@@ -30,7 +31,25 @@ const PersonDetail = () => {
 
   if (loading) {
     return (
-      <div className="h-[60vh] flex items-center justify-center text-gray-400">Loading person…</div>
+      <div className="max-w-7xl mx-auto">
+        <div className="relative h-[40vh] md:h-[50vh] w-full">
+          <Skeleton className="absolute inset-0 w-full h-full" />
+        </div>
+        <div className="px-6 md:px-10 py-8">
+          <Skeleton className="h-8 w-1/3 mb-6" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-20 w-full" />
+          </div>
+          <Skeleton className="h-6 w-40 mb-4" />
+          <div className="flex gap-4 overflow-x-auto pb-4">
+            <Skeleton className="h-64 w-40" />
+            <Skeleton className="h-64 w-40" />
+            <Skeleton className="h-64 w-40" />
+          </div>
+        </div>
+      </div>
     );
   }
   if (error) {

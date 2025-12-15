@@ -4,7 +4,9 @@ import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Film } from "lucide-react"
 
 
-const MovieCard = ({ title, image, rate, year, badge }) => {
+import Skeleton from "@/components/ui/skeleton"
+
+const MovieCard = ({ title, image, rate, year, badge, loading = false }) => {
   const [imgError, setImgError] = React.useState(false)
 
   return (
@@ -15,7 +17,9 @@ const MovieCard = ({ title, image, rate, year, badge }) => {
                    scale-90 group-hover:scale-100
                    group-hover:shadow-lg group-hover:shadow-black/40"
       >
-        {!imgError && image ? (
+        {loading ? (
+          <Skeleton className="h-full w-full" />
+        ) : !imgError && image ? (
           <img
             src={image}
             alt={title}
@@ -48,11 +52,20 @@ const MovieCard = ({ title, image, rate, year, badge }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
         <div className="absolute bottom-0 left-0 right-0 px-4 py-3 opacity-0 group-hover:opacity-100 transition-opacity">
           <h3 className="text-white text-lg font-semibold line-clamp-2">
-            {title}
+            {loading ? <Skeleton className="h-5 w-3/4" /> : title}
           </h3>
           <div className="mt-1 text-sm text-gray-200 space-x-3">
-            {rate !== undefined && <span>⭐ {rate}</span>}
-            {year !== undefined && <span>{year}</span>}
+            {loading ? (
+              <>
+                <Skeleton className="inline-block h-4 w-10 align-middle" />
+                <Skeleton className="inline-block h-4 w-8 align-middle" />
+              </>
+            ) : (
+              <>
+                {rate !== undefined && <span>⭐ {rate}</span>}
+                {year !== undefined && <span>{year}</span>}
+              </>
+            )}
           </div>
         </div>
       </AspectRatio>

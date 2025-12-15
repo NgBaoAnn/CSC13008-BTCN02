@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import MovieCard from "@/components/movie/MovieCard";
 import { getTopRated } from "@/services/api";
 import { useNavigate } from "react-router-dom";
+import Skeleton from "@/components/ui/skeleton";
 
 // Fetch 15 per API request, display 3 per slide
 const API_LIMIT = 15;
@@ -111,7 +112,11 @@ const TopRatedSection = () => {
 
         <div className="grid grid-cols-3 gap-6 flex-1 dark:p-4 dark:rounded-lg">
           {loading ? (
-            <div className="col-span-3 text-center text-gray-500 dark:text-slate-400">Loading...</div>
+            <>
+              <MovieCard loading />
+              <MovieCard loading />
+              <MovieCard loading />
+            </>
           ) : error ? (
             <div className="col-span-3 text-center text-red-500">{error}</div>
           ) : movies.length === 0 ? (

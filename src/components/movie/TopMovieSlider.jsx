@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import MovieCard from "@/components/movie/MovieCard";
 import { getTopMovies } from "@/services/api";
+import Skeleton from "@/components/ui/skeleton";
 
 function TopMovieSlider() {
   const [movies, setMovies] = useState([]);
@@ -40,7 +41,19 @@ function TopMovieSlider() {
     setCurrent((i) => (movies.length ? (i + 1) % movies.length : 0));
   }, [movies.length]);
 
-  if (loading) return <p className="text-center py-8">Loading…</p>;
+  if (loading) {
+    return (
+      <section className="relative">
+        <div className="flex items-center justify-center gap-10">
+          <Skeleton className="h-8 w-8" />
+          <div className="max-w-md w-full">
+            <MovieCard loading title="" image="" />
+          </div>
+          <Skeleton className="h-8 w-8" />
+        </div>
+      </section>
+    );
+  }
   if (error) return <p className="text-center text-red-500">{error}</p>;
   if (!movies.length) return <p className="text-center py-8">No movies</p>;
 

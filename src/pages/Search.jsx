@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import MovieCard from '@/components/movie/MovieCard';
 import { searchMoviesByTitle } from '@/services/api';
 import Pagination from '@/components/common/Pagination';
+import Skeleton from '@/components/ui/skeleton';
 
 const Search = () => {
   const [searchParams] = useSearchParams();
@@ -52,7 +53,13 @@ const Search = () => {
     <div className="px-6 py-8">
 
       {loading && (
-        <div className="py-10 text-center text-gray-600 dark:text-slate-400">Loading...</div>
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <Skeleton key={i} className="h-80 w-full" />
+            ))}
+          </div>
+        </>
       )}
 
       {!loading && title && results.length === 0 && (
