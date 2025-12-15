@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getPersonDetail } from '@/services/api';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
 
 const PersonDetail = () => {
@@ -58,7 +58,17 @@ const PersonDetail = () => {
   return (
     <div className="min-h-screen ">
       {/* Banner header */}
-      <ChevronLeft onClick={() => navigate(-1)} className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition">Back</ChevronLeft>
+      <div className="absolute top-4 left-4 z-20">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => navigate(-1)}
+          className="gap-1 bg-white/80 hover:bg-white text-slate-900 backdrop-blur cursor-pointer"
+        >
+          <ChevronLeft className="w-4 h-4" />
+          Back
+        </Button>
+      </div>
 
       <div className="relative h-[40vh] md:h-[50vh] w-full bg-black">
         <img src={avatar} alt={name} className="absolute inset-0 w-full h-full object-cover opacity-40" />
@@ -81,7 +91,7 @@ const PersonDetail = () => {
         {summary && (
           <section className="mb-8">
             <h2 className="text-xl font-semibold mb-3">Biography</h2>
-            <p className="text-black leading-relaxed">{summary}</p>
+            <p className="text-black dark:text-white leading-relaxed">{summary}</p>
           </section>
         )}
 
