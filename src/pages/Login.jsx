@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import BackButton from '@/components/common/BackButton';
 import { Spinner } from '@/components/ui/spinner';
 import { toast } from 'sonner';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
 const schema = z.object({
   username: z.string().min(3, 'Username is required'),
@@ -17,7 +18,8 @@ const schema = z.object({
 });
 
 const Login = () => {
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({ resolver: zodResolver(schema) });
+  const form = useForm({ resolver: zodResolver(schema) });
+  const { handleSubmit, formState: { isSubmitting } } = form;
   const { login } = useAuth();
   const navigate = useNavigate();
   const [serverError, setServerError] = useState('');
@@ -44,33 +46,49 @@ const Login = () => {
           <CardTitle>Login</CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div>
-              <label className="block text-sm mb-1 text-left">Username</label>
-              <Input placeholder="yourusername" {...register('username')} />
-              {errors.username && (
-                <p className="text-red-600 text-xs mt-1">{errors.username.message}</p>
-              )}
-            </div>
-            <div>
-              <label className="block text-sm mb-1 text-left">Password</label>
-              <Input type="password" placeholder="••••••••" {...register('password')} />
-              {errors.password && (
-                <p className="text-red-600 text-xs mt-1">{errors.password.message}</p>
-              )}
-            </div>
-            {serverError && <p className="text-red-600 text-sm">{serverError}</p>}
-            <Button type="submit" disabled={isSubmitting} className="w-full">
-              {isSubmitting ? (
-                <span className="inline-flex items-center gap-2">
-                  <Spinner />
-                  Logging in...
-                </span>
-              ) : (
-                'Login'
-              )}
-            </Button>
-          </form>
+          <Form {...form}>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm text-left">Username</FormLabel>
+                    <FormControl>
+                      <Input placeholder="yourusername" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm text-left">Password</FormLabel>
+                    <FormControl>
+                      <Input type="password" placeholder="••••••••" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {serverError && <p className="text-red-600 text-sm">{serverError}</p>}
+              <Button type="submit" disabled={isSubmitting} className="w-full">
+                {isSubmitting ? (
+                  <span className="inline-flex items-center gap-2">
+                    <Spinner />
+                    Logging in...
+                  </span>
+                ) : (
+                  'Login'
+                )}
+              </Button>
+            </form>
+          </Form>
         </CardContent>
           <CardFooter>
             <p className="text-xs opacity-70">Don't have an account? <a href="/register" className="underline">Register</a></p>

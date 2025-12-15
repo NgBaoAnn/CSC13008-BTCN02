@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { getUserProfile, updateUserProfile } from '@/services/api';
 import { useAuth } from '@/context/AuthContext';
 import BackButton from '@/components/common/BackButton';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
 const schema = z.object({
   email: z.string().email('Please enter a valid email'),
@@ -36,12 +37,8 @@ const Profile = () => {
   const [success, setSuccess] = useState('');
   const [editMode, setEditMode] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({ resolver: zodResolver(schema) });
+  const form = useForm({ resolver: zodResolver(schema) });
+  const { handleSubmit, formState: { errors }, reset } = form;
 
   useEffect(() => {
     let mounted = true;
@@ -142,46 +139,63 @@ const Profile = () => {
         )}
 
         {editMode && (
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium" htmlFor="email">Email</label>
-                <Input id="email" type="email" placeholder="you@example.com"
-                  disabled={loading || submitting} className="mt-1" {...register('email')} />
-                {errors.email && (
-                  <p className="text-xs text-red-600 mt-1">{errors.email.message}</p>
-                )}
+          <Form {...form}>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div className="grid md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium">Email</FormLabel>
+                      <FormControl>
+                        <Input id="email" type="email" placeholder="you@example.com" disabled={loading || submitting} className="mt-1" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium">Phone</FormLabel>
+                      <FormControl>
+                        <Input id="phone" type="text" placeholder="Optional" disabled={loading || submitting} className="mt-1" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
-              <div>
-                <label className="text-sm font-medium" htmlFor="phone">Phone</label>
-                <Input id="phone" type="text" placeholder="Optional"
-                  disabled={loading || submitting} className="mt-1" {...register('phone')} />
-                {errors.phone && (
-                  <p className="text-xs text-red-600 mt-1">{errors.phone.message}</p>
-                )}
-              </div>
-            </div>
 
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium" htmlFor="dob">Date of Birth</label>
-                <Input id="dob" type="date" placeholder="YYYY-MM-DD"
-                  disabled={loading || submitting} className="mt-1" {...register('dob')} />
-                {errors.dob && (
-                  <p className="text-xs text-red-600 mt-1">{errors.dob.message}</p>
-                )}
+              <div className="grid md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="dob"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium">Date of Birth</FormLabel>
+                      <FormControl>
+                        <Input id="dob" type="date" placeholder="YYYY-MM-DD" disabled={loading || submitting} className="mt-1" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
-            </div>
 
-            <div className="flex justify-end gap-3 pt-2">
-              <Button type="button" variant="outline" onClick={() => { reset({ email: profile?.email || '', phone: profile?.phone || '', dob: profile?.dob || '' }); setEditMode(false); }} disabled={submitting}>
-                Cancel
-              </Button>
-              <Button type="submit"  disabled={loading || submitting}>
-                {submitting ? 'Saving…' : 'Save Changes'}
-              </Button>
-            </div>
-          </form>
+              <div className="flex justify-end gap-3 pt-2">
+                <Button type="button" variant="outline" onClick={() => { reset({ email: profile?.email || '', phone: profile?.phone || '', dob: profile?.dob || '' }); setEditMode(false); }} disabled={submitting}>
+                  Cancel
+                </Button>
+                <Button type="submit"  disabled={loading || submitting}>
+                  {submitting ? 'Saving…' : 'Save Changes'}
+                </Button>
+              </div>
+            </form>
+          </Form>
         )}
       </Card>
     </div>
