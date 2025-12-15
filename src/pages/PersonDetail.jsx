@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { getPersonDetail } from '@/services/api';
 import Skeleton from '@/components/ui/skeleton';
 import BackButton from '@/components/common/BackButton';
+import MovieCard from '@/components/movie/MovieCard';
 
 const PersonDetail = () => {
   const { id } = useParams();
@@ -75,8 +76,8 @@ const PersonDetail = () => {
   return (
     <div className="min-h-screen ">
       {/* Banner header */}
-      <div className="absolute top-4 left-4 z-20 mb-4">
-        <BackButton className="bg-white/80 hover:bg-white text-slate-900 backdrop-blur" />
+      <div className="w-full mx-auto flex flex-start">
+        <BackButton />
       </div>
 
       <div className="relative h-[40vh] md:h-[50vh] w-full bg-black">
@@ -137,19 +138,14 @@ const PersonDetail = () => {
                   <Link
                     key={m.id}
                     to={`/movie/${m.id}`}
-                    className="group min-w-[160px] sm:min-w-[180px] md:min-w-[200px]"
+                    className="min-w-[160px] sm:min-w-[180px] md:min-w-[200px]"
                   >
-                    <div className="relative rounded-md overflow-hidden bg-white/5">
-                      <img src={m.image || 'https://via.placeholder.com/300x450'} alt={m.title}
-                        className="w-full h-48 sm:h-56 md:h-64 object-cover transition-transform duration-300 group-hover:scale-105" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </div>
-                    <div className="mt-2">
-                      <p className="font-medium truncate">{m.title}</p>
-                      <p className="text-sm text-gray-300 mt-1">
-                        {m.role ? m.role : ''}{m.character ? ` • ${m.character}` : ''}
-                      </p>
-                    </div>
+                    <MovieCard
+                      title={m.title}
+                      image={m.image}
+                      rate={m.rate}
+                      year={m.year}
+                    />
                   </Link>
                 ))}
               </div>

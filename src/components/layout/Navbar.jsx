@@ -114,13 +114,13 @@ const Navbar = () => {
                 <DropdownMenuItem onClick={() => navigate('/favorites')}>Favorites</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/profile')}>Profile</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem
+                <DropdownMenuItem className="bg-red-300 text-black hover:bg-red-500"
                   onClick={async () => {
                     await logout();
                     navigate('/');
                   }}
                 >
-                  Logout
+                  Log out
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

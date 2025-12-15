@@ -103,6 +103,7 @@ const MovieDetail = () => {
     countries,
     languages,
     ratings,
+    box_office,
     similar_movies,
   } = movie
 
@@ -113,6 +114,8 @@ const MovieDetail = () => {
   const safeCountries = Array.isArray(countries) ? countries : []
   const safeLanguages = Array.isArray(languages) ? languages : []
   const safeSimilar = Array.isArray(similar_movies) ? similar_movies : []
+  const safeBoxOffice = box_office || {}
+  const { budget, grossUSA, openingWeekendUSA, cumulativeWorldwideGross } = safeBoxOffice
 
   /* ================= UI ================= */
 
@@ -162,10 +165,32 @@ const MovieDetail = () => {
         {/* Meta */}
           <div className="flex flex-wrap items-center gap-3 text-sm">
             {(() => {
-              const displayRate = ratings?.imDb
-              return displayRate !== null && displayRate !== undefined && String(displayRate).trim() !== ""
-                ? (<Badge variant="secondary" className="gap-1">IMDb: {String(displayRate)}</Badge>)
-                : (<Badge variant="outline">No rating</Badge>)
+              const v = (x) => x !== null && x !== undefined && String(x).trim() !== ""
+              const hasAnyRating = v(ratings?.imDb) || v(ratings?.metacritic) || v(ratings?.theMovieDb) || v(ratings?.filmAffinity) || v(ratings?.rottenTomatoes)
+
+              if (!hasAnyRating) {
+                return (<Badge variant="outline">No rating</Badge>)
+              }
+
+              return (
+                <>
+                  {v(ratings?.imDb) && (
+                    <Badge variant="secondary" className="gap-1">IMDb: {String(ratings.imDb)}</Badge>
+                  )}
+                  {v(ratings?.metacritic) && (
+                    <Badge variant="outline" className="gap-1">Metacritic: {String(ratings.metacritic)}</Badge>
+                  )}
+                  {v(ratings?.rottenTomatoes) && (
+                    <Badge variant="outline" className="gap-1">RottenTomatoes: {String(ratings.rottenTomatoes)}</Badge>
+                  )}
+                  {v(ratings?.theMovieDb) && (
+                    <Badge variant="outline" className="gap-1">TMDb: {String(ratings.theMovieDb)}</Badge>
+                  )}
+                  {v(ratings?.filmAffinity) && (
+                    <Badge variant="outline" className="gap-1">FilmAffinity: {String(ratings.filmAffinity)}</Badge>
+                  )}
+                </>
+              )
             })()}
 
             {runtime && (
@@ -234,6 +259,38 @@ const MovieDetail = () => {
 
 
         <div className="mt-14 space-y-10">
+          {/* ===== BOX OFFICE ===== */}
+          {(budget || grossUSA || openingWeekendUSA || cumulativeWorldwideGross) && (
+            <section>
+              <h2 className="text-xl font-semibold mb-4 text-left text-gray-900 dark:text-slate-100">Box Office</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {budget && (
+                  <div className="border rounded-lg p-3 dark:border-slate-700">
+                    <div className="text-xs uppercase tracking-wide text-gray-500 dark:text-slate-400">Budget</div>
+                    <div className="text-base font-medium text-gray-900 dark:text-slate-100">{budget}</div>
+                  </div>
+                )}
+                {grossUSA && (
+                  <div className="border rounded-lg p-3 dark:border-slate-700">
+                    <div className="text-xs uppercase tracking-wide text-gray-500 dark:text-slate-400">US Gross</div>
+                    <div className="text-base font-medium text-gray-900 dark:text-slate-100">{grossUSA}</div>
+                  </div>
+                )}
+                {openingWeekendUSA && (
+                  <div className="border rounded-lg p-3 dark:border-slate-700">
+                    <div className="text-xs uppercase tracking-wide text-gray-500 dark:text-slate-400">Opening Weekend (US)</div>
+                    <div className="text-base font-medium text-gray-900 dark:text-slate-100">{openingWeekendUSA}</div>
+                  </div>
+                )}
+                {cumulativeWorldwideGross && (
+                  <div className="border rounded-lg p-3 dark:border-slate-700">
+                    <div className="text-xs uppercase tracking-wide text-gray-500 dark:text-slate-400">Worldwide Gross</div>
+                    <div className="text-base font-medium text-gray-900 dark:text-slate-100">{cumulativeWorldwideGross}</div>
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
           {/* ===== REVIEWS ===== */}
           <section className="px-6 md:px-10">
             <ReviewList movieId={id} initialLimit={5} />
