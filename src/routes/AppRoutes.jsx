@@ -10,7 +10,7 @@ import Register from '@/pages/Register';
 import Profile from '@/pages/Profile';
 import Favorites from '@/pages/Favorites';
 import NotFound from '@/pages/NotFound';
-import ProtectedRoute from '@/components/ProtectedRoute';
+import ProtectedRoute from '@/components/common/ProtectedRoute';
 
 export const router = createBrowserRouter([
   {
