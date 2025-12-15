@@ -97,3 +97,33 @@ export async function searchMoviesByTitle(title, page = 1, limit = 12) {
     pagination: json?.pagination ?? { current_page: page, total_pages: 1, total_items: 0, page_size: limit },
   };
 }
+
+/**
+ * Get movie detail by id
+ * @param {string|number} id
+ * @returns {Promise<Object>}
+ */
+export async function getMovieDetail(id) {
+  if (!id) {
+    throw new Error("Movie id is required")
+  }
+
+  const res = await fetch(
+    `${API_URL}/movies/${encodeURIComponent(id)}`,
+    {
+      headers: {
+        "x-app-token": API_TOKEN,
+      },
+    }
+  )
+
+  if (!res.ok) {
+    if (res.status === 404) {
+      throw new Error("Movie not found")
+    }
+    throw new Error(`Failed to load movie (HTTP ${res.status})`)
+  }
+
+  const data = await res.json()
+  return data ?? null
+}

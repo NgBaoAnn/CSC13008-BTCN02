@@ -47,8 +47,8 @@ const Navbar = () => {
               type="text"
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
-              placeholder="Search by title"
-              className="h-8 w-[180px] text-sm"
+              placeholder="Title, Person, Genre ..."
+              className="h-8 w-[180px] text-sm border border-green-500"
             />
             <Button
               type="submit"

@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import MovieCard from '@/components/movie/MovieCard';
 import { searchMoviesByTitle } from '@/services/api';
+import { Button } from '@/components/ui/button';
 
 const Search = () => {
   const [searchParams] = useSearchParams();
@@ -77,23 +78,23 @@ const Search = () => {
 
       {!loading && pagination.total_pages > 1 && (
         <div className="mt-8 flex items-center justify-center gap-3">
-          <button
+          <Button
             onClick={() => canPrev && goToPage(pagination.current_page - 1)}
             disabled={!canPrev}
             className={`px-4 py-2 rounded-md text-sm border transition ${canPrev ? 'bg-pink-500 text-white hover:bg-pink-600 border-pink-500' : 'bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed'} `}
           >
             Previous
-          </button>
+          </Button>
           <span className="text-sm text-gray-700 dark:text-slate-200">
             Page {pagination.current_page} of {pagination.total_pages}
           </span>
-          <button
+          <Button 
             onClick={() => canNext && goToPage(pagination.current_page + 1)}
             disabled={!canNext}
             className={`px-4 py-2 rounded-md text-sm border transition ${canNext ? 'bg-pink-500 text-white hover:bg-pink-600 border-pink-500' : 'bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed'} `}
           >
             Next
-          </button>
+          </Button>
         </div>
       )}
     </div>
