@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react"
 import { getMovieReviews } from "@/services/api"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+} from "@/components/ui/dropdown-menu"
 import { Pagination, PaginationContent, PaginationItem, PaginationPrevious, PaginationNext } from "@/components/ui/pagination"
 import ExpandableText from "@/components/common/Exandabletext"
 import Skeleton from "@/components/ui/skeleton"
@@ -56,15 +65,23 @@ const ReviewList = ({ movieId, initialLimit = 5 }) => {
     <div className="mt-10">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-slate-100">Reviews</h2>
-        <select
-          value={sort}
-          onChange={(e) => setSort(e.target.value)}
-          className="text-sm rounded-md border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200 px-2 py-1"
-        >
-          {SORT_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>{opt.label}</option>
-          ))}
-        </select>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="min-w-[140px] justify-between">
+              {SORT_OPTIONS.find((o) => o.value === sort)?.label || "Sort"}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-44">
+            <DropdownMenuLabel>Sort by</DropdownMenuLabel>
+            <DropdownMenuRadioGroup value={sort} onValueChange={setSort}>
+              {SORT_OPTIONS.map((opt) => (
+                <DropdownMenuRadioItem key={opt.value} value={opt.value}>
+                  {opt.label}
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {loading && (

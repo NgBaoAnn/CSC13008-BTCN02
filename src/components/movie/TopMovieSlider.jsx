@@ -1,13 +1,18 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MovieCard from "@/components/movie/MovieCard";
 import { getTopMovies } from "@/services/api";
 import Skeleton from "@/components/ui/skeleton";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 function TopMovieSlider() {
   const [movies, setMovies] = useState([]);
-  const [current, setCurrent] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -33,14 +38,6 @@ function TopMovieSlider() {
     };
   }, []);
 
-  const prev = useCallback(() => {
-    setCurrent((i) => (movies.length ? (i - 1 + movies.length) % movies.length : 0));
-  }, [movies.length]);
-
-  const next = useCallback(() => {
-    setCurrent((i) => (movies.length ? (i + 1) % movies.length : 0));
-  }, [movies.length]);
-
   if (loading) {
     return (
       <section className="relative">
@@ -57,28 +54,30 @@ function TopMovieSlider() {
   if (error) return <p className="text-center text-red-500">{error}</p>;
   if (!movies.length) return <p className="text-center py-8">No movies</p>;
 
-  const movie = movies[current];
-
   return (
-    <section className="relative">
-      <div className="flex items-center justify-center gap-10">
-        <button className="cursor-pointer hover:opacity-75 hover:scale-105" onClick={prev}>
-          <ChevronLeft size={32} />
-        </button>
+    <section className="relative flex justify-center">
+      <Carousel
+        className="w-full max-w-md"
+        opts={{ loop: true, align: "center" }}
+      >
+        <CarouselContent>
+          {movies.map((movie) => (
+            <CarouselItem key={movie.id}>
+              <Link to={`/movie/${movie.id}`} className="block">
+                <MovieCard
+                  title={movie.title}
+                  image={movie.image}
+                  rate={movie.rate}
+                  year={movie.year}
+                />
+              </Link>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
 
-        <Link to={`/movie/${movie.id}`} className="max-w-md w-full">
-          <MovieCard
-            title={movie.title}
-            image={movie.image}
-            rate={movie.rate}
-            year={movie.year}
-          />
-        </Link>
-
-        <button className="cursor-pointer hover:opacity-75 hover:scale-105" onClick={next}>
-          <ChevronRight  size={32} />
-        </button>
-      </div>
+        <CarouselPrevious className="-left-12" />
+        <CarouselNext className="-right-12" />
+      </Carousel>
     </section>
   );
 }

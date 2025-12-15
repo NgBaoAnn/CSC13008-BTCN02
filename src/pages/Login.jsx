@@ -7,6 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import BackButton from '@/components/common/BackButton';
+import { Spinner } from '@/components/ui/spinner';
+import { toast } from 'sonner';
 
 const schema = z.object({
   username: z.string().min(3, 'Username is required'),
@@ -23,6 +26,7 @@ const Login = () => {
     setServerError('');
     try {
       await login(values.username, values.password);
+      toast.success('Logged in successfully');
       navigate('/');
     } catch (e) {
       setServerError(e?.message || 'Login failed');
@@ -30,8 +34,12 @@ const Login = () => {
   };
 
   return (
-    <div className="p-6 min-h-[60vh] flex items-center justify-center">
-      <Card className="w-full max-w-md">
+    <div className="p-6 min-h-[60vh] flex flex-col">
+      <div className="w-full mx-auto mb-4 flex flex-start">
+        <BackButton />
+      </div>
+      <div className="flex-1 flex items-center justify-center">
+        <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Login</CardTitle>
         </CardHeader>
@@ -53,14 +61,22 @@ const Login = () => {
             </div>
             {serverError && <p className="text-red-600 text-sm">{serverError}</p>}
             <Button type="submit" disabled={isSubmitting} className="w-full">
-              {isSubmitting ? 'Logging in...' : 'Login'}
+              {isSubmitting ? (
+                <span className="inline-flex items-center gap-2">
+                  <Spinner />
+                  Logging in...
+                </span>
+              ) : (
+                'Login'
+              )}
             </Button>
           </form>
         </CardContent>
-        <CardFooter>
-          <p className="text-xs opacity-70">Don't have an account? <a href="/register" className="underline">Register</a></p>
-        </CardFooter>
-      </Card>
+          <CardFooter>
+            <p className="text-xs opacity-70">Don't have an account? <a href="/register" className="underline">Register</a></p>
+          </CardFooter>
+        </Card>
+      </div>
     </div>
   );
 };

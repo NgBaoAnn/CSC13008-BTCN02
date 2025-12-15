@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { getUserProfile, updateUserProfile } from '@/services/api';
 import { useAuth } from '@/context/AuthContext';
+import BackButton from '@/components/common/BackButton';
 
 const schema = z.object({
   email: z.string().email('Please enter a valid email'),
@@ -90,8 +91,12 @@ const Profile = () => {
   };
 
   return (
-    <div className="p-6 md:p-8 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-semibold mb-6">My Profile</h1>
+    
+    <div className="p-6 md:p-8 mx-auto">
+      <div className="flex flex-start mb-4">
+        <BackButton />
+      </div>
+      <h1 className="text-2xl font-semibold mb-6 text-left">My Profile</h1>
       <Card className="p-6">
         <div className="flex items-center gap-4 mb-4">
           <Avatar>

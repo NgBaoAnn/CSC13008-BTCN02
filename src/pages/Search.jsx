@@ -4,6 +4,7 @@ import MovieCard from '@/components/movie/MovieCard';
 import { searchMoviesByTitle } from '@/services/api';
 import { Pagination, PaginationContent, PaginationItem, PaginationPrevious, PaginationNext } from '@/components/ui/pagination';
 import Skeleton from '@/components/ui/skeleton';
+import BackButton from '@/components/common/BackButton';
 
 const Search = () => {
   const [searchParams] = useSearchParams();
@@ -51,6 +52,9 @@ const Search = () => {
 
   return (
     <div className="px-6 py-8">
+      <div className="w-full mx-auto mb-4 flex flex-start">
+        <BackButton />
+      </div>
 
       {loading && (
         <>

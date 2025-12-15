@@ -11,7 +11,7 @@ import { Link } from "react-router-dom"
 import Skeleton from "@/components/ui/skeleton"
 import useFavorites from "@/hooks/useFavorites"
 import FavoriteToggle from "@/components/movie/FavoriteToggle"
-
+import BackButton from "@/components/common/BackButton";
 
 
 const MovieDetail = () => {
@@ -119,6 +119,9 @@ const MovieDetail = () => {
   return (
     <div className="max-w-7xl mx-auto">
       {/* ===== COVER (POSTER AS HERO) ===== */}
+      <div className="w-full mx-auto flex flex-start">
+        <BackButton />
+      </div>
       <div className="relative h-[50vh] md:h-[60vh] w-full overflow-hidden">
         <img
           src={poster}
@@ -136,6 +139,7 @@ const MovieDetail = () => {
               {title}
               {year && (
                 <span className="ml-2 text-gray-500 dark:text-slate-400 font-normal">({year})</span>
+
               )}
             </h1>
             {/* Favorite toggle */}

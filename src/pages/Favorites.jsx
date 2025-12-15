@@ -5,6 +5,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Skeleton from '@/components/ui/skeleton'
 import MovieCard from '@/components/movie/MovieCard'
+import BackButton from '@/components/common/BackButton'
 
 const Favorites = () => {
   const { favorites, loading, removeFavorite } = useFavorites({ autoLoad: true })
@@ -13,6 +14,9 @@ const Favorites = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-6 md:px-10 py-8">
+      <div className="w-full mx-auto mb-4 flex flex-start">
+        <BackButton />
+      </div>
       <h1 className="text-2xl md:text-3xl font-semibold mb-6">My Favorites</h1>
 
       {loading ? (

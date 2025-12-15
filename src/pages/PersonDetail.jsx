@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { getPersonDetail } from '@/services/api';
-import { Button } from '@/components/ui/button';
 import Skeleton from '@/components/ui/skeleton';
-import { ChevronLeft } from 'lucide-react';
+import BackButton from '@/components/common/BackButton';
 
 const PersonDetail = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [person, setPerson] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -77,16 +75,8 @@ const PersonDetail = () => {
   return (
     <div className="min-h-screen ">
       {/* Banner header */}
-      <div className="absolute top-4 left-4 z-20">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => navigate(-1)}
-          className="gap-1 bg-white/80 hover:bg-white text-slate-900 backdrop-blur cursor-pointer"
-        >
-          <ChevronLeft className="w-4 h-4" />
-          Back
-        </Button>
+      <div className="absolute top-4 left-4 z-20 mb-4">
+        <BackButton className="bg-white/80 hover:bg-white text-slate-900 backdrop-blur" />
       </div>
 
       <div className="relative h-[40vh] md:h-[50vh] w-full bg-black">
