@@ -3,10 +3,12 @@ import { Home } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { useAuth } from "@/context/AuthContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState("");
+  const { isAuthenticated, user, logout } = useAuth();
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -36,9 +38,24 @@ const Navbar = () => {
             <Link to="/profile" className="hover:underline">
               Profile
             </Link>
-            <Link to="/login" className="hover:underline">
-              Login
-            </Link>
+            {!isAuthenticated ? (
+              <Link to="/login" className="hover:underline">
+                Login
+              </Link>
+            ) : (
+              <>
+                <span className="text-xs opacity-80">{user?.username}</span>
+                <button
+                  onClick={async () => {
+                    await logout();
+                    navigate('/login');
+                  }}
+                  className="underline"
+                >
+                  Logout
+                </button>
+              </>
+            )}
           </div>
 
           {/* Search by title */}

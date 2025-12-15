@@ -10,6 +10,7 @@ import Register from '@/pages/Register';
 import Profile from '@/pages/Profile';
 import Favorites from '@/pages/Favorites';
 import NotFound from '@/pages/NotFound';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 export const router = createBrowserRouter([
   {
@@ -20,10 +21,20 @@ export const router = createBrowserRouter([
       { path: 'search', element: <Search /> },
       { path: 'movie/:id', element: <MovieDetail /> },
       { path: 'person/:id', element: <PersonDetail /> },
-      { path: 'login', element: <Login /> },
-      { path: 'register', element: <Register /> },
-      { path: 'profile', element: <Profile /> },
-      { path: 'favorites', element: <Favorites /> },
+      {
+        element: <ProtectedRoute mode="guest" />,
+        children: [
+          { path: 'login', element: <Login /> },
+          { path: 'register', element: <Register /> },
+        ],
+      },
+      {
+        element: <ProtectedRoute />,
+        children: [
+          { path: 'profile', element: <Profile /> },
+          { path: 'favorites', element: <Favorites /> },
+        ],
+      },
       { path: '*', element: <NotFound /> },
     ],
   },

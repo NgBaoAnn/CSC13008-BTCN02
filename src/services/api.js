@@ -180,3 +180,67 @@ export async function getPersonDetail(id) {
   const data = await res.json()
   return data ?? null
 }
+
+/**
+ * Register a new user
+ * @param {{username:string,email:string,password:string,phone:string,dob:string}} payload
+ * @returns {Promise<{ message: string }>}
+ */
+export async function registerUser(payload) {
+  const res = await fetch(`${API_URL}/users/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-app-token': API_TOKEN,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(json?.message || `Register failed (HTTP ${res.status})`);
+  }
+  return json;
+}
+
+/**
+ * Login user
+ * @param {{username:string,password:string}} payload
+ * @returns {Promise<{ token: string, user: object, message?: string }>}
+ */
+export async function loginUser(payload) {
+  const res = await fetch(`${API_URL}/users/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-app-token': API_TOKEN,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(json?.message || `Login failed (HTTP ${res.status})`);
+  }
+  return json;
+}
+
+/**
+ * Logout user
+ * @returns {Promise<{ message?: string }>}
+ */
+export async function logoutUser() {
+  const res = await fetch(`${API_URL}/api/users/logout`, {
+    method: 'POST',
+    headers: {
+      'x-app-token': API_TOKEN,
+    },
+  });
+  // Some APIs return 204 No Content
+  if (res.status === 204) return { message: 'Logged out' };
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(json?.message || `Logout failed (HTTP ${res.status})`);
+  }
+  return json;
+}
