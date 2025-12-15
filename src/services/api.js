@@ -344,7 +344,12 @@ export async function getFavorites() {
     err.status = res.status;
     throw err;
   }
-  return Array.isArray(json) ? json : (Array.isArray(json?.data) ? json.data : []);
+  const arr = Array.isArray(json)
+    ? json
+    : (Array.isArray(json?.data)
+      ? json.data
+      : (Array.isArray(json?.favorites) ? json.favorites : []));
+  return arr;
 }
 
 export async function addFavorite(movieId) {

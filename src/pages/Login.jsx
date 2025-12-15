@@ -38,14 +38,14 @@ const Login = () => {
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
-              <label className="block text-sm mb-1">Username</label>
+              <label className="block text-sm mb-1 text-left">Username</label>
               <Input placeholder="yourusername" {...register('username')} />
               {errors.username && (
                 <p className="text-red-600 text-xs mt-1">{errors.username.message}</p>
               )}
             </div>
             <div>
-              <label className="block text-sm mb-1">Password</label>
+              <label className="block text-sm mb-1 text-left">Password</label>
               <Input type="password" placeholder="••••••••" {...register('password')} />
               {errors.password && (
                 <p className="text-red-600 text-xs mt-1">{errors.password.message}</p>

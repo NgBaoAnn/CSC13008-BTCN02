@@ -4,6 +4,7 @@ import useFavorites from '@/hooks/useFavorites'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Skeleton from '@/components/ui/skeleton'
+import MovieCard from '@/components/movie/MovieCard'
 
 const Favorites = () => {
   const { favorites, loading, removeFavorite } = useFavorites({ autoLoad: true })
@@ -33,22 +34,21 @@ const Favorites = () => {
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {items.map((m) => {
-            const id = m?.id
-            const title = m?.title || 'Untitled'
-            const year = m?.year ? ` (${m.year})` : ''
-            const image = m?.image || 'https://via.placeholder.com/400x600'
+          {items.map((raw) => {
+            const m = (typeof raw === 'string' || typeof raw === 'number') ? { id: raw } : (raw || {})
+            const id = m.id
+            const title = m.title || 'Untitled Movie'
+            const year = m.release_year
+            const image = m.image_url
+            const rate = m.external_ratings?.imDb
             return (
-              <Card key={id} className="overflow-hidden">
+              <Card key={id} className="border-0 shadow-md">
                 <CardContent className="p-0">
-                  <Link to={`/movie/${id}`}>
-                    <img src={image} alt={title} className="w-full aspect-[2/3] object-cover" />
+                  <Link to={`/movie/${id}`} className="block">
+                    <MovieCard title={title} image={image} rate={rate} year={year} />
                   </Link>
                 </CardContent>
                 <CardFooter className="flex-col items-stretch gap-3">
-                  <Link to={`/movie/${id}`} className="text-left font-medium line-clamp-1">
-                    {title}{year}
-                  </Link>
                   <Button
                     variant="outline"
                     onClick={() => removeFavorite(id)}
