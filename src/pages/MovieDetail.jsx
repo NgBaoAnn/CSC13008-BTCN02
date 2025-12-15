@@ -86,16 +86,16 @@ const MovieDetail = () => {
           alt={title}
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/30 to-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-black/20 to-black/70 dark:from-black/10 dark:via-black/40 dark:to-black/80" />
       </div>
 
       {/* ===== CONTENT BELOW COVER ===== */}
       <div className="px-6 md:px-10 py-8">
         <div className="flex flex-col gap-4">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 text-left">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-slate-100 text-left">
             {title}
             {year && (
-              <span className="ml-2 text-gray-500 font-normal">({year})</span>
+              <span className="ml-2 text-gray-500 dark:text-slate-400 font-normal">({year})</span>
             )}
           </h1>
 
@@ -109,14 +109,14 @@ const MovieDetail = () => {
 
             {runtime && (
               <>
-                <span className="text-gray-400">•</span>
-                <span className="text-gray-700">{runtime}</span>
+                <span className="text-gray-400 dark:text-slate-500">•</span>
+                <span className="text-gray-700 dark:text-slate-300">{runtime}</span>
               </>
             )}
 
             {safeGenres.length > 0 && (
               <>
-                <span className="text-gray-400">•</span>
+                <span className="text-gray-400 dark:text-slate-500">•</span>
                 <div className="flex flex-wrap gap-2">
                   {safeGenres.map((g) => (
                     <Badge key={g} variant="outline">{g}</Badge>
@@ -128,14 +128,14 @@ const MovieDetail = () => {
 
           {/* Short description */}
           {short_description && (
-            <p className="text-gray-700 leading-relaxed max-w-3xl">{short_description}</p>
+            <p className="text-gray-700 dark:text-slate-300 leading-relaxed max-w-3xl">{short_description}</p>
           )}
 
           {plot_full && (
             <ExpandableText
               text={plot_full}
               step={350}
-              className="mt-4 border-l-4 border-red-600 pl-4 text-left"
+              className="mt-4 border-l-4 border-red-600 pl-4 text-left "
             />
           )}
 
@@ -146,34 +146,35 @@ const MovieDetail = () => {
             </Alert>
           )}
         </div>
+        <div className="mt-14 space-y-10">
+          {/* Directors */}
+          <section>
+            <h2 className="text-xl font-semibold mb-4 text-left text-gray-900 dark:text-slate-100">Directors</h2>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {safeDirectors.map((d) => (
+                <li key={d.id || d.name}>
+                  <PersonCard image={d.image} name={d.name} subtitle={d.role || "Director"} />
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          {/* Actors */}
+          <section>
+            <h2 className="text-xl font-semibold mb-4 text-left text-gray-900 dark:text-slate-100">Actors</h2>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {safeActors.map((a) => (
+                <li key={a.id || a.name}>
+                  <PersonCard image={a.image} name={a.name} subtitle={a.character ? `as ${a.character}` : "Cast"} />
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
       </div>
 
       {/* ===== PEOPLE ===== */}
-      <div className="mt-14 space-y-10">
-        {/* Directors */}
-        <section>
-          <h2 className="text-xl font-semibold mb-4 text-left">Directors</h2>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {safeDirectors.map((d) => (
-              <li key={d.id || d.name}>
-                <PersonCard image={d.image} name={d.name} subtitle={d.role || "Director"} />
-              </li>
-            ))}
-          </ul>
-        </section>
 
-        {/* Actors */}
-        <section>
-          <h2 className="text-xl font-semibold mb-4 text-left">Actors</h2>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {safeActors.map((a) => (
-              <li key={a.id || a.name}>
-                <PersonCard image={a.image} name={a.name} subtitle={a.character ? `as ${a.character}` : "Cast"} />
-              </li>
-            ))}
-          </ul>
-        </section>
-      </div>
     </div>
   )
 }

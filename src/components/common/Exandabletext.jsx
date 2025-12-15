@@ -23,14 +23,14 @@ const ExpandableText = ({
 
   return (
     <div className={className}>
-      <p className="whitespace-pre-line text-gray-700">
+      <p className="whitespace-pre-line text-gray-700 dark:text-slate-100">
         {visibleText}
         {!isEnd && "..."}
       </p>
 
       <button
         onClick={handleToggle}
-        className={`mt-2 text-sm font-medium text-red-600 hover:underline ${buttonClassName}`}
+        className={`mt-2 text-sm font-medium text-gray-100 hover:underline ${buttonClassName}`}
       >
         {isEnd ? "Thu gọn" : "Xem thêm"}
       </button>
