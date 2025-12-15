@@ -38,7 +38,7 @@ const Profile = () => {
   const [editMode, setEditMode] = useState(false);
 
   const form = useForm({ resolver: zodResolver(schema) });
-  const { handleSubmit, formState: { errors }, reset } = form;
+  const { handleSubmit, reset } = form;
 
   useEffect(() => {
     let mounted = true;
@@ -77,6 +77,7 @@ const Profile = () => {
       setEditMode(false);
     } catch (err) {
       if (err?.status === 403 || err?.status === 401) {
+        // eslint-disable-next-line no-unused-vars
         try { logout?.(); } catch (_) {}
         navigate('/login');
         return;

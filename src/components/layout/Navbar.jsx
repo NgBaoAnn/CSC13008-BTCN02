@@ -1,5 +1,5 @@
 import React from "react";
-import { Home } from "lucide-react";
+import { Home, LogIn, UserPlus } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -8,6 +8,14 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -37,36 +45,8 @@ const Navbar = () => {
           <Home size={18} className="cursor-pointer dark:text-slate-50" />
         </Link>
 
-        {/* Right: Search */}
+        {/* Right: Search + User Area */}
         <div className="flex items-center gap-4">
-          {/* Simple nav links */}
-          <div className="flex items-center gap-3 text-sm">
-            <Link to="/favorites" className="hover:underline">
-              Favorites
-            </Link>
-            <Link to="/profile" className="hover:underline">
-              Profile
-            </Link>
-            {!isAuthenticated ? (
-              <Link to="/login" className="hover:underline">
-                Login
-              </Link>
-            ) : (
-              <>
-                <span className="text-xs opacity-80">{user?.username}</span>
-                <button
-                  onClick={async () => {
-                    await logout();
-                    navigate('/login');
-                  }}
-                  className="underline"
-                >
-                  Logout
-                </button>
-              </>
-            )}
-          </div>
-
           {/* Search by title */}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-center gap-2">
@@ -74,17 +54,18 @@ const Navbar = () => {
                 control={form.control}
                 name="title"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        type="text"
-                        placeholder="Title, Person, Genre ..."
-                        className="h-8 w-[180px] text-sm border border-black text-black dark:text-slate-200 dark:border-white dark:bg-slate-800"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                <FormItem className="relative m-0">
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="Title, Person, Genre ..."
+                      className="h-10 w-[180px] text-sm border border-black text-black dark:text-slate-200 dark:border-white dark:bg-slate-800"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="absolute bottom-[-25px] left-3 text-red-500" />
+                </FormItem>
+
                 )}
               />
               <Button
@@ -96,6 +77,54 @@ const Navbar = () => {
               </Button>
             </form>
           </Form>
+
+          {/* User Area */}
+          {!isAuthenticated ? (
+            <div className="flex items-center gap-2">
+              <Link to="/login">
+                <Button variant="default" size="sm" className="h-8 gap-1">
+                  <LogIn className="size-3.5" />
+                  Login
+                </Button>
+              </Link>
+              <Link to="/register">
+                <Button variant="secondary" size="sm" className="h-8 gap-1">
+                  <UserPlus className="size-3.5" />
+                  Register
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-2 rounded px-2 py-1 hover:bg-blue-200 dark:hover:bg-slate-900">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage
+                      src={"https://github.com/shadcn.png"}
+                      alt={user?.username || "User"}
+                    />
+                    <AvatarFallback>
+                      {(user?.username || "U").slice(0, 2).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm font-medium">{user?.username || "User"}</span>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-44">
+                <DropdownMenuItem onClick={() => navigate('/favorites')}>Favorites</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/profile')}>Profile</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={async () => {
+                    await logout();
+                    navigate('/');
+                  }}
+                >
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
     </nav>

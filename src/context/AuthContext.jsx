@@ -21,6 +21,7 @@ export function AuthProvider({ children }) {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         if (parsed?.token) setToken(parsed.token);
         if (parsed?.user) setUser(parsed.user);
       }
