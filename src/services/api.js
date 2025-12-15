@@ -150,3 +150,33 @@ export async function getMovieDetail(id) {
   const data = await res.json()
   return data ?? null
 }
+
+/**
+ * Get person detail by id
+ * @param {string} id
+ * @returns {Promise<Object|null>}
+ */
+export async function getPersonDetail(id) {
+  if (!id) {
+    throw new Error("Person id is required")
+  }
+
+  const res = await fetch(
+    `${API_URL}/persons/${encodeURIComponent(id)}`,
+    {
+      headers: {
+        "x-app-token": API_TOKEN,
+      },
+    }
+  )
+
+  if (!res.ok) {
+    if (res.status === 404) {
+      throw new Error("Person not found")
+    }
+    throw new Error(`Failed to load person (HTTP ${res.status})`)
+  }
+
+  const data = await res.json()
+  return data ?? null
+}

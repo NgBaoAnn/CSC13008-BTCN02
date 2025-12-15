@@ -223,7 +223,13 @@ const MovieDetail = () => {
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {safeDirectors.map((d) => (
                 <li key={d.id || d.name}>
-                  <PersonCard image={d.image} name={d.name} subtitle={d.role || "Director"} />
+                  {d?.id ? (
+                    <Link to={`/person/${d.id}`}>
+                      <PersonCard image={d.image} name={d.name} subtitle={d.role || "Director"} />
+                    </Link>
+                  ) : (
+                    <PersonCard image={d.image} name={d.name} subtitle={d.role || "Director"} />
+                  )}
                 </li>
               ))}
             </ul>
@@ -235,7 +241,13 @@ const MovieDetail = () => {
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {safeActors.map((a) => (
                 <li key={a.id || a.name}>
-                  <PersonCard image={a.image} name={a.name} subtitle={a.character ? `as ${a.character}` : "Cast"} />
+                  {a?.id ? (
+                    <Link to={`/person/${a.id}`}>
+                      <PersonCard image={a.image} name={a.name} subtitle={a.character ? `as ${a.character}` : "Cast"} />
+                    </Link>
+                  ) : (
+                    <PersonCard image={a.image} name={a.name} subtitle={a.character ? `as ${a.character}` : "Cast"} />
+                  )}
                 </li>
               ))}
             </ul>

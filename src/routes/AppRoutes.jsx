@@ -4,7 +4,7 @@ import App from '@/App';
 import Home from '@/pages/Home';
 import Search from '@/pages/Search';
 import MovieDetail from '@/pages/MovieDetail';
-import Person from '@/pages/Person';
+import PersonDetail from '@/pages/PersonDetail';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import Profile from '@/pages/Profile';
@@ -19,7 +19,7 @@ export const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'search', element: <Search /> },
       { path: 'movie/:id', element: <MovieDetail /> },
-      { path: 'person/:id', element: <Person /> },
+      { path: 'person/:id', element: <PersonDetail /> },
       { path: 'login', element: <Login /> },
       { path: 'register', element: <Register /> },
       { path: 'profile', element: <Profile /> },
