@@ -3,6 +3,7 @@ import { getMovieReviews } from "@/services/api"
 import { Badge } from "@/components/ui/badge"
 import Pagination from "@/components/common/Pagination"
 import ExpandableText from "@/components/common/Exandabletext"
+import Skeleton from "@/components/ui/skeleton"
 
 const SORT_OPTIONS = [
   { value: "newest", label: "Newest" },
@@ -67,7 +68,24 @@ const ReviewList = ({ movieId, initialLimit = 5 }) => {
       </div>
 
       {loading && (
-        <div className="py-6 text-sm text-gray-600 dark:text-slate-400">Loading reviews…</div>
+        <ul className="space-y-4" aria-hidden>
+          {Array.from({ length: Math.max(3, Math.min(5, pagination.page_size || initialLimit)) }).map((_, i) => (
+            <li key={i} className="rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-5 w-10" />
+                  <Skeleton className="h-5 w-16" />
+                </div>
+                <Skeleton className="h-3 w-20" />
+              </div>
+              <Skeleton className="h-4 w-2/3 mt-3" />
+              <Skeleton className="h-3 w-full mt-2" />
+              <Skeleton className="h-3 w-11/12 mt-1" />
+              <Skeleton className="h-3 w-10/12 mt-1" />
+            </li>
+          ))}
+        </ul>
       )}
 
       {!loading && reviews.length === 0 && (

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { loginUser, logoutUser } from '@/services/api';
+import { loginUser, logoutUser, setAccessToken } from '@/services/api';
 
 const AuthContext = createContext({
   isAuthenticated: false,
@@ -41,6 +41,7 @@ export function AuthProvider({ children }) {
     const { token: t, user: u } = await loginUser({ username, password });
     setToken(t);
     setUser(u);
+    try { setAccessToken(t); } catch {}
     return { token: t, user: u };
   };
 
@@ -52,6 +53,7 @@ export function AuthProvider({ children }) {
     }
     setToken(null);
     setUser(null);
+    try { setAccessToken(null); } catch {}
   };
 
   const value = useMemo(() => ({

@@ -1,6 +1,17 @@
 const API_URL = import.meta.env.VITE_MOVIE_API_URL;
 const API_TOKEN = import.meta.env.VITE_MOVIE_API_TOKEN;
 
+// Access token helpers
+export function getAccessToken() {
+  return typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
+}
+export function setAccessToken(token) {
+  if (typeof window !== 'undefined') {
+    if (token) localStorage.setItem('access_token', token);
+    else localStorage.removeItem('access_token');
+  }
+}
+
 /**
  * Fetch Top 5 most popular movies
  * @returns {Promise<Array>}
@@ -230,7 +241,7 @@ export async function loginUser(payload) {
  * @returns {Promise<{ message?: string }>}
  */
 export async function logoutUser() {
-  const res = await fetch(`${API_URL}/api/users/logout`, {
+  const res = await fetch(`${API_URL}/users/logout`, {
     method: 'POST',
     headers: {
       'x-app-token': API_TOKEN,
@@ -241,6 +252,70 @@ export async function logoutUser() {
   const json = await res.json().catch(() => ({}));
   if (!res.ok) {
     throw new Error(json?.message || `Logout failed (HTTP ${res.status})`);
+  }
+  return json;
+}
+
+/**
+ * Get current user profile
+ * @returns {Promise<{id:number,username:string,email:string,phone:string,dob:string,role:string}>}
+ */
+export async function getUserProfile() {
+  const token = getAccessToken();
+  if (!token) {
+    const err = new Error('Missing access token');
+    err.status = 401;
+    throw err;
+  }
+
+  const res = await fetch(`${API_URL}/users/profile`, {
+    method: 'GET',
+    headers: {
+      'x-app-token': API_TOKEN,
+      Authorization: `Bearer ${token}`,
+    },
+  })
+
+  const json = await res.json().catch(() => ({}))
+
+  if (!res.ok) {
+    const err = new Error(json?.message || `Profile fetch failed (HTTP ${res.status})`)
+    err.status = res.status
+    throw err
+  }
+
+  return json
+}
+
+
+/**
+ * Update current user profile
+ * @param {{email:string,phone?:string,dob:string}} payload
+ * @returns {Promise<{id:number,username:string,email:string,phone:string,dob:string,role:string}>}
+ */
+export async function updateUserProfile(payload) {
+  const token = getAccessToken();
+  if (!token) {
+    const err = new Error('Missing access token');
+    err.status = 401;
+    throw err;
+  }
+
+  const res = await fetch(`${API_URL}/users/profile`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-app-token': API_TOKEN,
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const msg = json?.message || `Profile update failed (HTTP ${res.status})`;
+    const err = new Error(msg);
+    err.status = res.status;
+    throw err;
   }
   return json;
 }
