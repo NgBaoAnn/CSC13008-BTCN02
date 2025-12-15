@@ -1,20 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import { Home } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/context/AuthContext";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const [keyword, setKeyword] = useState("");
   const { isAuthenticated, user, logout } = useAuth();
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    const trimmed = keyword.trim();
-    if (!trimmed) return;
-    navigate(`/search?title=${encodeURIComponent(trimmed)}&page=1`);
+  const schema = z.object({
+    title: z.string().trim().min(1, "Please enter a keyword"),
+  });
+  const form = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: { title: "" },
+  });
+
+  const onSubmit = (values) => {
+    const title = (values?.title || "").trim();
+    navigate(`/search?title=${encodeURIComponent(title)}&page=1`);
   };
   return (
     <nav className="bg-blue-100 border-b border-blue-200 dark:bg-slate-950 dark:border-b dark:border-slate-800">
@@ -59,22 +68,34 @@ const Navbar = () => {
           </div>
 
           {/* Search by title */}
-          <form onSubmit={onSubmit} className="flex items-center gap-2">
-            <Input
-              type="text"
-              value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
-              placeholder="Title, Person, Genre ..."
-              className="h-8 w-[180px] text-sm border border-black text-black dark:text-slate-200 dark:border-white dark:bg-slate-800"
-            />
-            <Button
-              type="submit"
-              size="sm"
-              className="h-8 bg-transparent border border-green-500 text-green-600 hover:bg-green-50 hover:border-green-600 dark:text-white dark:border-white dark:hover:bg-slate-500"
-            >
-              Search
-            </Button>
-          </form>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-center gap-2">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="Title, Person, Genre ..."
+                        className="h-8 w-[180px] text-sm border border-black text-black dark:text-slate-200 dark:border-white dark:bg-slate-800"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button
+                type="submit"
+                size="sm"
+                className="h-8 bg-transparent border border-green-500 text-green-600 hover:bg-green-50 hover:border-green-600 dark:text-white dark:border-white dark:hover:bg-slate-500"
+              >
+                Search
+              </Button>
+            </form>
+          </Form>
         </div>
       </div>
     </nav>
